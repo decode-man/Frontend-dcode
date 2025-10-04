@@ -180,6 +180,97 @@ const MaintainerDashboard: React.FC = () => {
 
       {/* Main Content */}
       <div className="max-w-6xl mx-auto p-6">
+        {/* Profile Section */}
+        <div className="mb-8">
+          <div className="bg-white rounded-lg shadow-sm border p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-6">My Profile & Statistics</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+              <Card>
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                      <Shield className="w-5 h-5 text-green-600" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold text-green-600">87.2%</p>
+                      <p className="text-sm text-gray-600">PR Merge Rate</p>
+                    </div>
+                  </div>
+                  <div className="mt-3">
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="bg-green-600 h-2 rounded-full w-[87.2%]"></div>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">298 merged of 342 created</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                      <User className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold text-blue-600">156</p>
+                      <p className="text-sm text-gray-600">Issues Closed</p>
+                    </div>
+                  </div>
+                  <div className="mt-3">
+                    <p className="text-xs text-gray-500">89 created • 175% close rate</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                      <Users className="w-5 h-5 text-purple-600" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold text-purple-600">1,247</p>
+                      <p className="text-sm text-gray-600">PRs Reviewed</p>
+                    </div>
+                  </div>
+                  <div className="mt-3">
+                    <p className="text-xs text-gray-500">This month: 47 reviews</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                      <Building2 className="w-5 h-5 text-orange-600" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold text-orange-600">8</p>
+                      <p className="text-sm text-gray-600">Repositories</p>
+                    </div>
+                  </div>
+                  <div className="mt-3">
+                    <p className="text-xs text-gray-500">Actively maintained</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="flex justify-end">
+              <Button 
+                variant="outline" 
+                onClick={() => navigate('/maintainer-profile/1')}
+                className="flex items-center gap-2"
+              >
+                <User className="w-4 h-4" />
+                View Full Profile
+              </Button>
+            </div>
+          </div>
+        </div>
+
         {/* Action Bar */}
         <div className="flex items-center justify-between mb-8">
           <div>

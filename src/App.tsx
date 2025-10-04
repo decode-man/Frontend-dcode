@@ -20,6 +20,8 @@ import IssueDetail from './pages/IssueDetail';
 import MaintainerOrganizationDetail from './pages/MaintainerOrganizationDetail';
 import MaintainerRepositoryDetail from './pages/MaintainerRepositoryDetail';
 import MaintainerIssueDetail from './pages/MaintainerIssueDetail';
+import MaintainerProfile from './pages/MaintainerProfile';
+import OrganizationMaintainers from './pages/OrganizationMaintainers';
 import Leaderboard from './components/LeaderboardComponent';
 import PrDetails from './pages/PrDetails';
 
@@ -162,6 +164,22 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={['maintainer']}>
                   <MaintainerIssueDetail />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/maintainer-profile/:maintainerId" 
+              element={
+                <ProtectedRoute allowedRoles={['admin', 'maintainer']}>
+                  <MaintainerProfile />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/organization/:organizationId/maintainers" 
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <OrganizationMaintainers />
                 </ProtectedRoute>
               } 
             />
