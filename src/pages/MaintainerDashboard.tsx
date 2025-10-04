@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
@@ -104,6 +104,7 @@ const mockOrganizations: Organization[] = [
 const MaintainerDashboard: React.FC = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [showProfile, setShowProfile] = useState(false);
 
   const handleOrganizationClick = (orgId: string) => {
     navigate(`/maintainer/organization/${orgId}`);
@@ -159,7 +160,10 @@ const MaintainerDashboard: React.FC = () => {
                 Maintainer
               </Badge>
               <div className="flex items-center gap-3">
-                <Avatar>
+                <Avatar 
+                  className="cursor-pointer hover:ring-2 hover:ring-primary/20 transition-all"
+                  onClick={() => setShowProfile(!showProfile)}
+                >
                   <AvatarImage src={user?.avatar_url} alt={user?.name || user?.login} />
                   <AvatarFallback>
                     <User className="w-4 h-4" />
@@ -181,9 +185,10 @@ const MaintainerDashboard: React.FC = () => {
       {/* Main Content */}
       <div className="max-w-6xl mx-auto p-6">
         {/* Profile Section */}
-        <div className="mb-8">
-          <div className="bg-white rounded-lg shadow-sm border p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">My Profile & Statistics</h2>
+        {showProfile && (
+          <div className="mb-8">
+            <div className="bg-white rounded-lg shadow-sm border p-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">My Profile & Statistics</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
               <Card>
@@ -268,8 +273,9 @@ const MaintainerDashboard: React.FC = () => {
                 View Full Profile
               </Button>
             </div>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Action Bar */}
         <div className="flex items-center justify-between mb-8">
