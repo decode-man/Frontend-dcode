@@ -43,24 +43,7 @@ const ContributorOnboarding: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Header */}
-      <div className="bg-white border-b">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                <User className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-xl font-semibold">Welcome, {user?.name || user?.login}!</h1>
-                <p className="text-sm text-gray-600">Contributor</p>
-              </div>
-            </div>
-            <Button variant="outline" onClick={logout}>
-              Logout
-            </Button>
-          </div>
-        </div>
-      </div>
+     
 
       {/* Main Content */}
       <div className="max-w-2xl mx-auto p-6">

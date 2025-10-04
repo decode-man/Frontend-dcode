@@ -100,49 +100,6 @@ const ContributedRepositories: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Header */}
-      <div className="bg-white border-b">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => navigate('/contributor/onboarding')}
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-              <div className="flex items-center gap-3">
-                <Avatar>
-                  <AvatarImage src={user?.avatar_url} alt={user?.name || user?.login} />
-                  <AvatarFallback>
-                    <User className="w-4 h-4" />
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <h1 className="text-xl font-semibold">My Contributions</h1>
-                  <p className="text-sm text-gray-600">@{user?.login}</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={fetchContributedRepositories}
-                disabled={isLoadingContributions}
-              >
-                <RefreshCw className={`w-4 h-4 mr-2 ${isLoadingContributions ? 'animate-spin' : ''}`} />
-                Refresh
-              </Button>
-              <Button variant="outline" onClick={logout}>
-                Logout
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Main Content */}
       <div className="max-w-6xl mx-auto p-6 space-y-8">
