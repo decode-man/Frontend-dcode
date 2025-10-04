@@ -1,0 +1,638 @@
+import React from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Badge } from '../components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
+import { 
+  ArrowLeft, 
+  Github, 
+  CircleDot,
+  CheckCircle,
+  MessageSquare,
+  User,
+  Calendar,
+  Clock,
+  ExternalLink,
+  Trophy,
+  Star,
+  Award,
+  Target,
+  TrendingUp
+} from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+
+interface Issue {
+  id: string;
+  number: number;
+  title: string;
+  description: string;
+  fullDescription: string;
+  author: string;
+  authorAvatar: string;
+  status: 'open' | 'closed';
+  priority: 'low' | 'medium' | 'high' | 'critical';
+  labels: string[];
+  createdAt: string;
+  updatedAt: string;
+  comments: number;
+  assignee?: string;
+  repository: string;
+  organization: string;
+  githubUrl: string;
+}
+
+interface LeaderboardEntry {
+  id: string;
+  rank: number;
+  username: string;
+  avatar: string;
+  name: string;
+  issuesResolved: number;
+  pullRequestsMerged: number;
+  contributionScore: number;
+  streak: number;
+  lastActivity: string;
+  badges: string[];
+}
+
+interface Comment {
+  id: string;
+  author: string;
+  authorAvatar: string;
+  content: string;
+  createdAt: string;
+  isAuthor: boolean;
+  isMaintainer: boolean;
+}
+
+const getMockIssue = (issueId: string): Issue => {
+  const issues: { [key: string]: Issue } = {
+    'issue-1': {
+      id: 'issue-1',
+      number: 195825,
+      title: 'Extension activation timeout in large workspaces',
+      description: 'Extensions fail to activate properly when opening very large workspaces with thousands of files.',
+      fullDescription: `## Problem Description
+
+When opening workspaces with more than 10,000 files, several extensions fail to activate within the default timeout period. This affects productivity as users lose access to essential features like IntelliSense, debugging, and syntax highlighting.
+
+## Steps to Reproduce
+
+1. Open a workspace with 10,000+ files (e.g., large monorepo)
+2. Wait for VS Code to fully load
+3. Check extension status in Extensions panel
+4. Notice several extensions showing "Activation failed" status
+
+## Expected Behavior
+
+All extensions should activate successfully regardless of workspace size, or provide graceful degradation with user feedback.
+
+## Actual Behavior
+
+Extensions timeout during activation, leaving users without critical functionality.
+
+## Environment
+
+- VS Code Version: 1.93.1
+- OS: Windows 11, macOS 14.6, Ubuntu 22.04
+- Extensions affected: ESLint, Prettier, GitLens, Python, TypeScript
+
+## Additional Context
+
+This issue has been reported by multiple enterprise users working with large codebases. The current 30-second timeout appears insufficient for complex workspaces.`,
+      author: 'user123',
+      authorAvatar: 'https://avatars.githubusercontent.com/u/1234567?v=4',
+      status: 'open',
+      priority: 'high',
+      labels: ['bug', 'performance', 'extensions', 'enterprise'],
+      createdAt: '2024-10-04',
+      updatedAt: '2024-10-04',
+      comments: 8,
+      assignee: 'alexdima',
+      repository: 'vscode',
+      organization: 'Microsoft',
+      githubUrl: 'https://github.com/microsoft/vscode/issues/195825'
+    },
+    'issue-2': {
+      id: 'issue-2',
+      number: 195824,
+      title: 'Syntax highlighting broken for new file types',
+      description: 'Syntax highlighting is not working correctly for newly added file extensions in the latest update.',
+      fullDescription: `## Issue Summary
+
+After the recent update to VS Code 1.93.1, syntax highlighting has stopped working for several file types that were previously supported. This affects readability and development experience.
+
+## Affected File Types
+
+- \`.vue\` files (Vue.js components)
+- \`.svelte\` files (Svelte components)  
+- \`.mdx\` files (Markdown with JSX)
+- \`.prisma\` files (Prisma schema)
+
+## Expected vs Actual Behavior
+
+**Expected:** All file types should have proper syntax highlighting based on their language extensions
+**Actual:** Files appear as plain text without any highlighting
+
+## Reproduction Steps
+
+1. Open any \`.vue\` file in VS Code 1.93.1
+2. Notice lack of syntax highlighting
+3. Try other affected file types
+4. Confirm extensions are installed and enabled
+
+## Workaround
+
+Manually setting language mode works temporarily, but resets when reopening files.
+
+## Impact
+
+This significantly impacts developer productivity for frontend developers working with modern frameworks.`,
+      author: 'developer456',
+      authorAvatar: 'https://avatars.githubusercontent.com/u/2345678?v=4',
+      status: 'open',
+      priority: 'medium',
+      labels: ['bug', 'editor', 'syntax-highlighting', 'regression'],
+      createdAt: '2024-10-03',
+      updatedAt: '2024-10-04',
+      comments: 12,
+      assignee: 'mjbvz',
+      repository: 'vscode',
+      organization: 'Microsoft',
+      githubUrl: 'https://github.com/microsoft/vscode/issues/195824'
+    }
+  };
+
+  return issues[issueId] || issues['issue-1'];
+};
+
+const getMockComments = (issueId: string): Comment[] => {
+  return [
+    {
+      id: 'comment-1',
+      author: 'alexdima',
+      authorAvatar: 'https://avatars.githubusercontent.com/u/5047891?v=4',
+      content: 'Thanks for reporting this issue. I can reproduce the problem on my end with large workspaces. We\'re looking into optimizing the extension activation process.',
+      createdAt: '2024-10-04T10:30:00Z',
+      isAuthor: false,
+      isMaintainer: true
+    },
+    {
+      id: 'comment-2',
+      author: 'user123',
+      authorAvatar: 'https://avatars.githubusercontent.com/u/1234567?v=4',
+      content: 'I\'ve tested this with different workspace sizes and the issue consistently occurs with 8000+ files. Smaller workspaces work fine.',
+      createdAt: '2024-10-04T11:15:00Z',
+      isAuthor: true,
+      isMaintainer: false
+    },
+    {
+      id: 'comment-3',
+      author: 'enterprise-dev',
+      authorAvatar: 'https://avatars.githubusercontent.com/u/3456789?v=4',
+      content: 'We\'re experiencing the same issue across our entire development team. This is blocking our daily workflow. Any ETA on a fix?',
+      createdAt: '2024-10-04T14:22:00Z',
+      isAuthor: false,
+      isMaintainer: false
+    },
+    {
+      id: 'comment-4',
+      author: 'alexdima',
+      authorAvatar: 'https://avatars.githubusercontent.com/u/5047891?v=4',
+      content: 'We\'re prioritizing this issue. Working on a fix that will increase the timeout for large workspaces and add better progress feedback. Target for next release.',
+      createdAt: '2024-10-04T16:45:00Z',
+      isAuthor: false,
+      isMaintainer: true
+    }
+  ];
+};
+
+const getMockLeaderboard = (): LeaderboardEntry[] => {
+  return [
+    {
+      id: '1',
+      rank: 1,
+      username: 'alexdima',
+      avatar: 'https://avatars.githubusercontent.com/u/5047891?v=4',
+      name: 'Alexandru Dima',
+      issuesResolved: 1247,
+      pullRequestsMerged: 892,
+      contributionScore: 9850,
+      streak: 45,
+      lastActivity: '2024-10-04',
+      badges: ['Core Maintainer', 'Bug Hunter', 'Performance Expert']
+    },
+    {
+      id: '2',
+      rank: 2,
+      username: 'mjbvz',
+      avatar: 'https://avatars.githubusercontent.com/u/12821956?v=4',
+      name: 'Matt Bierner',
+      issuesResolved: 1089,
+      pullRequestsMerged: 756,
+      contributionScore: 8945,
+      streak: 32,
+      lastActivity: '2024-10-04',
+      badges: ['TypeScript Expert', 'Extension Specialist', 'Community Hero']
+    },
+    {
+      id: '3',
+      rank: 3,
+      username: 'tyriar',
+      avatar: 'https://avatars.githubusercontent.com/u/2193314?v=4',
+      name: 'Daniel Imms',
+      issuesResolved: 967,
+      pullRequestsMerged: 634,
+      contributionScore: 8234,
+      streak: 28,
+      lastActivity: '2024-10-03',
+      badges: ['Terminal Expert', 'Windows Specialist', 'Accessibility Champion']
+    },
+    {
+      id: '4',
+      rank: 4,
+      username: 'jrieken',
+      avatar: 'https://avatars.githubusercontent.com/u/1794099?v=4',
+      name: 'Johannes Rieken',
+      issuesResolved: 823,
+      pullRequestsMerged: 567,
+      contributionScore: 7456,
+      streak: 22,
+      lastActivity: '2024-10-02',
+      badges: ['Language Server Expert', 'API Designer', 'Architecture Guru']
+    },
+    {
+      id: '5',
+      rank: 5,
+      username: 'aeschli',
+      avatar: 'https://avatars.githubusercontent.com/u/6461412?v=4',
+      name: 'Martin Aeschlimann',
+      issuesResolved: 745,
+      pullRequestsMerged: 489,
+      contributionScore: 6823,
+      streak: 19,
+      lastActivity: '2024-10-01',
+      badges: ['Theme Expert', 'JSON Specialist', 'Configuration Master']
+    },
+    {
+      id: '6',
+      rank: 6,
+      username: 'deepak1556',
+      avatar: 'https://avatars.githubusercontent.com/u/1770714?v=4',
+      name: 'Deepak Mohan',
+      issuesResolved: 692,
+      pullRequestsMerged: 423,
+      contributionScore: 6234,
+      streak: 15,
+      lastActivity: '2024-09-30',
+      badges: ['Electron Expert', 'Security Specialist', 'Build Master']
+    },
+    {
+      id: '7',
+      rank: 7,
+      username: 'bpasero',
+      avatar: 'https://avatars.githubusercontent.com/u/900690?v=4',
+      name: 'Benjamin Pasero',
+      issuesResolved: 634,
+      pullRequestsMerged: 378,
+      contributionScore: 5867,
+      streak: 12,
+      lastActivity: '2024-09-29',
+      badges: ['Workbench Expert', 'File System Guru', 'Performance Optimizer']
+    },
+    {
+      id: '8',
+      rank: 8,
+      username: 'kieferrm',
+      avatar: 'https://avatars.githubusercontent.com/u/8526665?v=4',
+      name: 'Kai Maetzel',
+      issuesResolved: 567,
+      pullRequestsMerged: 345,
+      contributionScore: 5234,
+      streak: 8,
+      lastActivity: '2024-09-28',
+      badges: ['Debug Expert', 'Protocol Specialist', 'Testing Champion']
+    }
+  ];
+};
+
+const getPriorityColor = (priority: string): string => {
+  const colors: { [key: string]: string } = {
+    'low': 'bg-green-100 text-green-800 border-green-200',
+    'medium': 'bg-yellow-100 text-yellow-800 border-yellow-200',
+    'high': 'bg-orange-100 text-orange-800 border-orange-200',
+    'critical': 'bg-red-100 text-red-800 border-red-200'
+  };
+  return colors[priority] || 'bg-gray-100 text-gray-800 border-gray-200';
+};
+
+const getStatusIcon = (status: string) => {
+  switch (status) {
+    case 'open':
+      return <CircleDot className="w-5 h-5 text-green-600" />;
+    case 'closed':
+      return <CheckCircle className="w-5 h-5 text-purple-600" />;
+    default:
+      return <CircleDot className="w-5 h-5 text-gray-600" />;
+  }
+};
+
+const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', { 
+    year: 'numeric', 
+    month: 'short', 
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+};
+
+const IssueDetail: React.FC = () => {
+  const { issueId } = useParams<{ issueId: string }>();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  if (!user || user.role !== 'admin') {
+    navigate('/login');
+    return null;
+  }
+
+  const issue = getMockIssue(issueId || '');
+  const comments = getMockComments(issueId || '');
+  const leaderboard = getMockLeaderboard();
+
+  const handleBack = () => {
+    navigate(-1);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white border-b">
+        <div className="max-w-7xl mx-auto p-6">
+          <Button
+            variant="ghost"
+            onClick={handleBack}
+            className="mb-4 text-gray-600 hover:text-gray-900"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Repository
+          </Button>
+          
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-2">
+                {getStatusIcon(issue.status)}
+                <h1 className="text-2xl font-bold text-gray-900">
+                  {issue.title} #{issue.number}
+                </h1>
+              </div>
+              <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
+                <span>{issue.organization} / {issue.repository}</span>
+                <div className="flex items-center gap-1">
+                  <User className="w-4 h-4" />
+                  <span>opened by {issue.author}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Calendar className="w-4 h-4" />
+                  <span>{formatDate(issue.createdAt)}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <MessageSquare className="w-4 h-4" />
+                  <span>{issue.comments} comments</span>
+                </div>
+              </div>
+              <div className="flex gap-2 mb-4">
+                <Badge variant="outline" className={getPriorityColor(issue.priority)}>
+                  {issue.priority} priority
+                </Badge>
+                <Badge variant="outline" className={
+                  issue.status === 'open' ? 'border-green-200 text-green-800' :
+                  'border-purple-200 text-purple-800'
+                }>
+                  {issue.status}
+                </Badge>
+                {issue.labels.map((label, index) => (
+                  <Badge key={index} variant="secondary" className="text-xs">
+                    {label}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Button variant="outline" asChild>
+                <a href={issue.githubUrl} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="w-4 h-4 mr-2" />
+                  View on GitHub
+                </a>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Column - Issue Details */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Issue Description */}
+            <Card>
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <Avatar className="w-8 h-8">
+                    <AvatarImage src={issue.authorAvatar} alt={issue.author} />
+                    <AvatarFallback>{issue.author.charAt(0).toUpperCase()}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <CardTitle className="text-lg">{issue.author}</CardTitle>
+                    <CardDescription>{formatDate(issue.createdAt)}</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="prose max-w-none">
+                  <div className="whitespace-pre-wrap text-gray-700 leading-relaxed">
+                    {issue.fullDescription}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Comments Section */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Comments ({comments.length})</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {comments.map((comment) => (
+                    <div key={comment.id} className="border rounded-lg p-4 bg-gray-50">
+                      <div className="flex items-start gap-3">
+                        <Avatar className="w-8 h-8">
+                          <AvatarImage src={comment.authorAvatar} alt={comment.author} />
+                          <AvatarFallback>{comment.author.charAt(0).toUpperCase()}</AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="font-medium">{comment.author}</span>
+                            {comment.isMaintainer && (
+                              <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
+                                Maintainer
+                              </Badge>
+                            )}
+                            {comment.isAuthor && (
+                              <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
+                                Author
+                              </Badge>
+                            )}
+                            <span className="text-xs text-gray-500">
+                              {formatDate(comment.createdAt)}
+                            </span>
+                          </div>
+                          <p className="text-gray-700 text-sm leading-relaxed">
+                            {comment.content}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Right Column - Sidebar */}
+          <div className="space-y-6">
+            {/* Issue Metadata */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Issue Details</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {issue.assignee && (
+                    <div>
+                      <p className="text-sm font-medium text-gray-600 mb-1">Assignee</p>
+                      <div className="flex items-center gap-2">
+                        <Avatar className="w-6 h-6">
+                          <AvatarImage src={`https://avatars.githubusercontent.com/u/5047891?v=4`} alt={issue.assignee} />
+                          <AvatarFallback>{issue.assignee.charAt(0).toUpperCase()}</AvatarFallback>
+                        </Avatar>
+                        <span className="text-sm">{issue.assignee}</span>
+                      </div>
+                    </div>
+                  )}
+                  <div>
+                    <p className="text-sm font-medium text-gray-600 mb-1">Status</p>
+                    <Badge variant="outline" className={
+                      issue.status === 'open' ? 'border-green-200 text-green-800' :
+                      'border-purple-200 text-purple-800'
+                    }>
+                      {issue.status}
+                    </Badge>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-600 mb-1">Priority</p>
+                    <Badge variant="outline" className={getPriorityColor(issue.priority)}>
+                      {issue.priority}
+                    </Badge>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-600 mb-1">Created</p>
+                    <p className="text-sm text-gray-700">{formatDate(issue.createdAt)}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-600 mb-1">Last Updated</p>
+                    <p className="text-sm text-gray-700">{formatDate(issue.updatedAt)}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Leaderboard */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Trophy className="w-5 h-5 text-yellow-600" />
+                  Contributors Leaderboard
+                </CardTitle>
+                <CardDescription>
+                  Top contributors to this repository
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {leaderboard.slice(0, 5).map((entry) => (
+                    <div key={entry.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50">
+                      <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-white text-xs font-bold">
+                        {entry.rank}
+                      </div>
+                      <Avatar className="w-8 h-8">
+                        <AvatarImage src={entry.avatar} alt={entry.username} />
+                        <AvatarFallback>{entry.username.charAt(0).toUpperCase()}</AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-gray-900 truncate">
+                          {entry.name}
+                        </p>
+                        <p className="text-xs text-gray-500">@{entry.username}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm font-bold text-primary">{entry.contributionScore}</p>
+                        <div className="flex items-center gap-1 text-xs text-gray-500">
+                          <Target className="w-3 h-3" />
+                          <span>{entry.issuesResolved}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="mt-4 pt-4 border-t">
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={() => navigate('/leaderboard')}
+                  >
+                    <TrendingUp className="w-4 h-4 mr-2" />
+                    View Full Leaderboard
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Quick Stats */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Quick Stats</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="text-center p-3 bg-blue-50 rounded-lg">
+                    <div className="flex items-center justify-center mb-1">
+                      <MessageSquare className="w-4 h-4 text-blue-600" />
+                    </div>
+                    <p className="text-lg font-bold text-blue-900">{issue.comments}</p>
+                    <p className="text-xs text-blue-600">Comments</p>
+                  </div>
+                  <div className="text-center p-3 bg-green-50 rounded-lg">
+                    <div className="flex items-center justify-center mb-1">
+                      <Star className="w-4 h-4 text-green-600" />
+                    </div>
+                    <p className="text-lg font-bold text-green-900">{issue.priority}</p>
+                    <p className="text-xs text-green-600">Priority</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default IssueDetail;
