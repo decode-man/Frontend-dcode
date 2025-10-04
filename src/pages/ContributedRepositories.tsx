@@ -26,7 +26,6 @@ const ContributedRepositories: React.FC = () => {
   const [isLoadingContributions, setIsLoadingContributions] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   const fetchContributedRepositories = async () => {
