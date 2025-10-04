@@ -19,6 +19,9 @@ import {
   Building2
 } from 'lucide-react';
 
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+
+
 interface MaintainerProfile {
   id: string;
   name: string;
@@ -56,6 +59,50 @@ interface MaintainerProfile {
     repository: string;
     timestamp: string;
   }>;
+  metrics: {
+    codeReviews: {
+      total: number;
+      approved: number;
+      changesRequested: number;
+      commented: number;
+      averageResponseTime: string;
+    };
+    issueManagement: {
+      opened: number;
+      closed: number;
+      labeled: number;
+      assigned: number;
+      avgTimeToClose: string;
+    };
+    communityInteraction: {
+      prComments: number;
+      issueComments: number;
+      discussionReplies: number;
+      mentionsReceived: number;
+      reactionsSent: number;
+    };
+    documentation: {
+      docCommits: number;
+      readmeUpdates: number;
+      wikiEdits: number;
+      docImprovements: number;
+    };
+    contributions: {
+      totalPRsMerged: number;
+      linesAdded: number;
+      linesDeleted: number;
+      filesChanged: number;
+      commitCount: number;
+    };
+    sentimentData: {
+      weekly: Array<{
+        week: string;
+        positive: number;
+        neutral: number;
+        negative: number;
+      }>;
+    };
+  };
 }
 
 // Mock data for maintainer profile
@@ -123,7 +170,51 @@ const getMockMaintainerProfile = (maintainerId: string): MaintainerProfile => {
           repository: 'vscode',
           timestamp: '1 day ago'
         }
-      ]
+      ],
+      metrics: {
+        codeReviews: {
+          total: 847,
+          approved: 623,
+          changesRequested: 156,
+          commented: 68,
+          averageResponseTime: "4.2 hours"
+        },
+        issueManagement: {
+          opened: 234,
+          closed: 198,
+          labeled: 456,
+          assigned: 312,
+          avgTimeToClose: "3.5 days"
+        },
+        communityInteraction: {
+          prComments: 1247,
+          issueComments: 892,
+          discussionReplies: 234,
+          mentionsReceived: 567,
+          reactionsSent: 892
+        },
+        documentation: {
+          docCommits: 89,
+          readmeUpdates: 34,
+          wikiEdits: 12,
+          docImprovements: 45
+        },
+        contributions: {
+          totalPRsMerged: 423,
+          linesAdded: 45678,
+          linesDeleted: 23456,
+          filesChanged: 1234,
+          commitCount: 789
+        },
+        sentimentData: {
+          weekly: [
+            { week: "Week 1", positive: 75, neutral: 20, negative: 5 },
+            { week: "Week 2", positive: 82, neutral: 15, negative: 3 },
+            { week: "Week 3", positive: 68, neutral: 25, negative: 7 },
+            { week: "Week 4", positive: 90, neutral: 8, negative: 2 }
+          ]
+        }
+      }
     },
     '2': {
       id: '2',
@@ -170,6 +261,39 @@ const getMockMaintainerProfile = (maintainerId: string): MaintainerProfile => {
   };
   
   return maintainers[maintainerId] || maintainers['1'];
+};
+
+const SentimentTemperature = ({ data }) => {
+  const avgPositive = data.reduce((acc, week) => acc + week.positive, 0) / data.length;
+  
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Sentiment Temperature</CardTitle>
+        <CardDescription>Review tone analysis over time</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="h-64">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={data}>
+              <XAxis dataKey="week" />
+              <YAxis />
+              <Tooltip />
+              <Line type="monotone" dataKey="positive" stroke="#059669" strokeWidth={2} />
+              <Line type="monotone" dataKey="neutral" stroke="#D97706" strokeWidth={2} /> 
+              <Line type="monotone" dataKey="negative" stroke="#DC2626" strokeWidth={2} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="mt-4 flex items-center justify-center gap-2">
+          <div className="text-center">
+            <div className="text-2xl font-bold text-green-700">{avgPositive.toFixed(1)}%</div>
+            <div className="text-sm text-gray-600">Average Positive Sentiment</div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
 };
 
 const formatDate = (dateString: string) => {
@@ -451,6 +575,98 @@ export default function MaintainerProfile() {
                   </div>
                 </CardContent>
               </Card>
+
+              <Card>
+      <CardHeader>
+        <CardTitle>Code Review Impact</CardTitle>
+        <CardDescription>Review patterns and effectiveness</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <span>Total Reviews</span>
+            <span className="font-bold text-green-600">{maintainer.metrics.codeReviews.total}</span>
+          </div>
+          <div>
+            <div className="flex justify-between mb-2">
+              <span>Approval Rate</span>
+              <span className="font-bold text-green-600">
+                {((maintainer.metrics.codeReviews.approved / maintainer.metrics.codeReviews.total) * 100).toFixed(1)}%
+              </span>
+            </div>
+            <Progress 
+              value={(maintainer.metrics.codeReviews.approved / maintainer.metrics.codeReviews.total) * 100} 
+              className="h-2"
+            />
+          </div>
+          <div className="grid grid-cols-3 gap-4 text-center">
+            <div>
+              <div className="text-lg font-bold text-green-600">
+                {maintainer.metrics.codeReviews.approved}
+              </div>
+              <div className="text-sm text-gray-600">Approved</div>
+            </div>
+            <div>
+              <div className="text-lg font-bold text-orange-600">
+                {maintainer.metrics.codeReviews.changesRequested}
+              </div>
+              <div className="text-sm text-gray-600">Changes Requested</div>
+            </div>
+            <div>
+              <div className="text-lg font-bold text-blue-600">
+                {maintainer.metrics.codeReviews.averageResponseTime}
+              </div>
+              <div className="text-sm text-gray-600">Avg Response Time</div>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+
+    <Card>
+      <CardHeader>
+        <CardTitle>Community Engagement</CardTitle>
+        <CardDescription>Interaction with contributors</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="text-center p-4 bg-gray-50 rounded-lg">
+              <div className="text-2xl font-bold text-purple-600">
+                {maintainer.metrics.communityInteraction.prComments + 
+                 maintainer.metrics.communityInteraction.issueComments}
+              </div>
+              <div className="text-sm text-gray-600">Total Comments</div>
+            </div>
+            <div className="text-center p-4 bg-gray-50 rounded-lg">
+              <div className="text-2xl font-bold text-blue-600">
+                {maintainer.metrics.communityInteraction.discussionReplies}
+              </div>
+              <div className="text-sm text-gray-600">Discussion Replies</div>
+            </div>
+          </div>
+          <div>
+            <h4 className="font-medium mb-2">Engagement Breakdown</h4>
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <span>PR Comments</span>
+                <span className="font-medium">{maintainer.metrics.communityInteraction.prComments}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span>Issue Comments</span>
+                <span className="font-medium">{maintainer.metrics.communityInteraction.issueComments}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span>Mentions Received</span>
+                <span className="font-medium">{maintainer.metrics.communityInteraction.mentionsReceived}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+
+                <SentimentTemperature data={maintainer.metrics.sentimentData.weekly} />
             </div>
           </TabsContent>
         </Tabs>
