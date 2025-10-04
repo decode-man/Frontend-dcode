@@ -8,7 +8,6 @@ import { useAuth } from '../context/AuthContext';
 
 const ContributorOnboarding: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<'contributed' | 'not-contributed' | null>(null);
-  const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleContinue = () => {

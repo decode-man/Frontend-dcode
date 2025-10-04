@@ -20,6 +20,11 @@ import {
   ExternalLink,
   Plus
 } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
+import { Input } from '../components/ui/input';
+import { Textarea } from '../components/ui/textarea';
+import { Label } from '../components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { useAuth } from '../context/AuthContext';
 
 interface PullRequest {
@@ -354,6 +359,15 @@ const MaintainerRepositoryDetail: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
+  // Create Issue Form State
+  const [isCreateIssueOpen, setIsCreateIssueOpen] = React.useState(false);
+  const [issueForm, setIssueForm] = React.useState({
+    title: '',
+    description: '',
+    timeLimit: '',
+    label: ''
+  });
+
   if (!user || user.role !== 'maintainer') {
     navigate('/login');
     return null;
@@ -365,6 +379,28 @@ const MaintainerRepositoryDetail: React.FC = () => {
 
   const handleBack = () => {
     navigate(-1);
+  };
+
+  const handleCreateIssue = () => {
+    if (!issueForm.title || !issueForm.description || !issueForm.timeLimit || !issueForm.label) {
+      alert('Please fill in all required fields');
+      return;
+    }
+    
+    // Here you would typically make an API call to create the issue
+    console.log('Creating issue:', issueForm);
+    
+    // Reset form and close dialog
+    setIssueForm({
+      title: '',
+      description: '',
+      timeLimit: '',
+      label: ''
+    });
+    setIsCreateIssueOpen(false);
+    
+    // Show success message
+    alert('Issue created successfully!');
   };
 
   return (
@@ -387,13 +423,84 @@ const MaintainerRepositoryDetail: React.FC = () => {
               <p className="text-gray-600 mt-1">{repository.organization} • Repository</p>
             </div>
             <div className="flex gap-3">
-              <Button 
-                className="bg-[#008236] hover:bg-[#006b2d] text-white"
-                onClick={() => console.log('Create issue clicked')}
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Create Issue
-              </Button>
+              <Dialog open={isCreateIssueOpen} onOpenChange={setIsCreateIssueOpen}>
+                <DialogTrigger asChild>
+                  <Button className="bg-[#008236] hover:bg-[#006b2d] text-white">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Create Issue
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[600px]">
+                  <DialogHeader>
+                    <DialogTitle>Create New Issue</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4 py-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="title">Title *</Label>
+                      <Input
+                        id="title"
+                        placeholder="Enter issue title"
+                        value={issueForm.title}
+                        onChange={(e) => setIssueForm({ ...issueForm, title: e.target.value })}
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="description">Description *</Label>
+                      <Textarea
+                        id="description"
+                        placeholder="Describe the issue in detail"
+                        rows={4}
+                        value={issueForm.description}
+                        onChange={(e) => setIssueForm({ ...issueForm, description: e.target.value })}
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="timeLimit">Time Limit *</Label>
+                      <Input
+                        id="timeLimit"
+                        placeholder="e.g., 7 days, 2 weeks, 1 month"
+                        value={issueForm.timeLimit}
+                        onChange={(e) => setIssueForm({ ...issueForm, timeLimit: e.target.value })}
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="label">Label *</Label>
+                      <Select 
+                        value={issueForm.label} 
+                        onValueChange={(value) => setIssueForm({ ...issueForm, label: value })}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a label" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="bug">🐛 Bug</SelectItem>
+                          <SelectItem value="goodFirst">🌱 Good First Issue</SelectItem>
+                          <SelectItem value="hard">🔥 Hard</SelectItem>
+                          <SelectItem value="medium">⚡ Medium</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div className="flex justify-end gap-3 pt-4">
+                      <Button 
+                        variant="outline" 
+                        onClick={() => setIsCreateIssueOpen(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button 
+                        className="bg-[#008236] hover:bg-[#006b2d] text-white"
+                        onClick={handleCreateIssue}
+                      >
+                        Create Issue
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
               <Button variant="outline" asChild>
                 <a href={repository.url} target="_blank" rel="noopener noreferrer">
                   <ExternalLink className="w-4 h-4 mr-2" />

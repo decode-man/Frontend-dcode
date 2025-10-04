@@ -10,18 +10,16 @@ import {
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
 import { Skeleton } from "../components/ui/skeleton";
-import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import {
-  ArrowLeft,
+
   Star,
   GitFork,
   ExternalLink,
   Calendar,
   Code,
-  User,
-  RefreshCw,
+
+
 } from "lucide-react";
-import { useAuth } from "../context/AuthContext";
 import { githubService } from "../services/github";
 import type { Repository } from "../types";
 
@@ -29,7 +27,6 @@ const MyRepositories: React.FC = () => {
   const [repositories, setRepositories] = useState<Repository[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   const fetchRepositories = async () => {
