@@ -20,6 +20,8 @@ import IssueDetail from './pages/IssueDetail';
 import MaintainerOrganizationDetail from './pages/MaintainerOrganizationDetail';
 import MaintainerRepositoryDetail from './pages/MaintainerRepositoryDetail';
 import MaintainerIssueDetail from './pages/MaintainerIssueDetail';
+import Leaderboard from './components/LeaderboardComponent';
+import PrDetails from './pages/PrDetails';
 
 // Protected Route component
 const ProtectedRoute: React.FC<{ children: React.ReactNode; allowedRoles?: string[] }> = ({ 
@@ -148,10 +150,27 @@ function App() {
               } 
             />
             <Route 
+              path="/maintainer/pr/:prId" 
+              element={
+                <ProtectedRoute allowedRoles={['maintainer']}>
+                  <PrDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route 
               path="/maintainer/issue/:issueId" 
               element={
                 <ProtectedRoute allowedRoles={['maintainer']}>
                   <MaintainerIssueDetail />
+                </ProtectedRoute>
+              } 
+            />
+
+            <Route 
+              path="/leaderboard" 
+              element={
+                <ProtectedRoute allowedRoles={['maintainer', 'admin', 'contributor']}>
+                  <Leaderboard />
                 </ProtectedRoute>
               } 
             />
