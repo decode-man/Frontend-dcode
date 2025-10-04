@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { Input } from '../components/ui/input';
 import { Skeleton } from '../components/ui/skeleton';
-import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
+
 import { 
-  ArrowLeft, 
   Search, 
   ExternalLink, 
-  User,
   RefreshCw,
   GitBranch,
   Clock
 } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+
 import { githubService } from '../services/github';
 import type { Repository, ContributionRepository } from '../types';
 
@@ -26,7 +24,7 @@ const ContributedRepositories: React.FC = () => {
   const [isLoadingContributions, setIsLoadingContributions] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
+
 
   const fetchContributedRepositories = async () => {
     try {
