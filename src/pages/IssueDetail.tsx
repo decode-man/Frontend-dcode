@@ -6,17 +6,14 @@ import { Badge } from '../components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import { 
   ArrowLeft, 
-  Github, 
   CircleDot,
   CheckCircle,
   MessageSquare,
   User,
   Calendar,
-  Clock,
   ExternalLink,
   Trophy,
   Star,
-  Award,
   Target,
   TrendingUp
 } from 'lucide-react';
@@ -167,7 +164,7 @@ This significantly impacts developer productivity for frontend developers workin
   return issues[issueId] || issues['issue-1'];
 };
 
-const getMockComments = (issueId: string): Comment[] => {
+const getMockComments = (): Comment[] => {
   return [
     {
       id: 'comment-1',
@@ -360,7 +357,7 @@ const IssueDetail: React.FC = () => {
   }
 
   const issue = getMockIssue(issueId || '');
-  const comments = getMockComments(issueId || '');
+  const comments = getMockComments();
   const leaderboard = getMockLeaderboard();
 
   const handleBack = () => {

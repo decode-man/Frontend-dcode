@@ -6,20 +6,15 @@ import { Badge } from '../components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import { 
   ArrowLeft, 
-  Github, 
-  GitBranch, 
   Star, 
   Eye, 
   GitFork, 
   Calendar, 
-  UserPlus, 
   Users,
   CircleDot,
   GitPullRequest,
-  AlertCircle,
   CheckCircle,
   XCircle,
-  Clock,
   MessageSquare,
   User,
   ExternalLink
@@ -128,7 +123,7 @@ const getMockRepository = (repoId: string): Repository => {
   return repositories[repoId] || repositories['vscode'];
 };
 
-const getMockPullRequests = (repoId: string): PullRequest[] => {
+const getMockPullRequests = (): PullRequest[] => {
   return [
     {
       id: 'pr-1',
@@ -218,7 +213,7 @@ const getMockPullRequests = (repoId: string): PullRequest[] => {
   ];
 };
 
-const getMockIssues = (repoId: string): Issue[] => {
+const getMockIssues = (): Issue[] => {
   return [
     {
       id: 'issue-1',
@@ -364,8 +359,8 @@ const RepositoryDetail: React.FC = () => {
   }
 
   const repository = getMockRepository(repoId || '');
-  const pullRequests = getMockPullRequests(repoId || '');
-  const issues = getMockIssues(repoId || '');
+  const pullRequests = getMockPullRequests();
+  const issues = getMockIssues();
 
   const handleBack = () => {
     navigate(-1);

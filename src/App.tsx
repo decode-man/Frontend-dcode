@@ -11,7 +11,6 @@ import ContributedRepositories from './pages/ContributedRepositories';
 import ContributorProfilePage from './pages/ContributorProfile';
 import AdminDashboard from './pages/AdminDashboard';
 import MaintainerDashboard from './pages/MaintainerDashboard';
-import LeaderboardPage from './pages/Leaderboard';
 import OrganizationDetail from './pages/OrganizationDetail';
 import RepositoryDetail from './pages/RepositoryDetail';
 import IssueDetail from './pages/IssueDetail';
