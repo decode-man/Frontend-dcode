@@ -8,6 +8,7 @@ import AuthCallback from './pages/AuthCallback';
 import ContributorOnboarding from './pages/ContributorOnboarding';
 import MyRepositories from './pages/MyRepositories';
 import ContributedRepositories from './pages/ContributedRepositories';
+import ContributorProfilePage from './pages/ContributorProfile';
 import AdminDashboard from './pages/AdminDashboard';
 import MaintainerDashboard from './pages/MaintainerDashboard';
 
@@ -75,6 +76,14 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={['contributor']}>
                   <MyRepositories />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/contributor/profile" 
+              element={
+                <ProtectedRoute allowedRoles={['contributor']}>
+                  <ContributorProfilePage />
                 </ProtectedRoute>
               } 
             />
