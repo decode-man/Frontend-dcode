@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
-import { GitBranch, Users, ArrowRight, User } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import { GitBranch, Users, ArrowRight } from 'lucide-react';
+
 
 const ContributorOnboarding: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<'contributed' | 'not-contributed' | null>(null);

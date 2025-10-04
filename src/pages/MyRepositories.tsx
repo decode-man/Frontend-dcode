@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+
 import {
   Card,
   CardContent,
@@ -27,7 +27,7 @@ const MyRepositories: React.FC = () => {
   const [repositories, setRepositories] = useState<Repository[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
+
 
   const fetchRepositories = async () => {
     try {
