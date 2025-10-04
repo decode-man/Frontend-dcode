@@ -10,6 +10,7 @@ import MyRepositories from './pages/MyRepositories';
 import ContributedRepositories from './pages/ContributedRepositories';
 import AdminDashboard from './pages/AdminDashboard';
 import MaintainerDashboard from './pages/MaintainerDashboard';
+import LeaderboardPage from './pages/Leaderboard';
 
 // Protected Route component
 const ProtectedRoute: React.FC<{ children: React.ReactNode; allowedRoles?: string[] }> = ({ 
@@ -93,6 +94,7 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={['admin']}>
                   <AdminDashboard />
+                  {/* <LeaderboardPage /> */}
                 </ProtectedRoute>
               } 
             />
