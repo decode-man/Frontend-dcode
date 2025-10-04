@@ -595,7 +595,7 @@ const IssueDetail: React.FC = () => {
                     onClick={() => navigate('/leaderboard')}
                   >
                     <TrendingUp className="w-4 h-4 mr-2" />
-                    View Full Leaderboard
+                    View Full Leaderboard ,,
                   </Button>
                 </div>
               </CardContent>

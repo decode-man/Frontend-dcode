@@ -101,7 +101,7 @@ export default function Leaderboard() {
   const topThree = leaderboardData.slice(0, 3).sort((a, b) => a.rank - b.rank);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-700 via-green-700 to-green-900 py-8 px-4">
+    <div className="min-h-screen bg-green-600 py-8 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
@@ -146,8 +146,8 @@ export default function Leaderboard() {
             </div>
           </div>
 
-          <Button className="bg-white text-purple-900 hover:bg-white/90 font-semibold">
-            How it Works
+          <Button className="bg-white text-black cursor-pointer hover:bg-white/90 font-semibold">
+            Refresh
           </Button>
         </motion.div>
 

@@ -607,7 +607,8 @@ const MaintainerRepositoryDetail: React.FC = () => {
           <CardContent>
             <div className="space-y-4">
               {pullRequests.map((pr) => (
-                <div key={pr.id} className="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                <div key={pr.id} className="border rounded-lg p-4 hover:bg-gray-50 transition-colors"
+                onClick={() => navigate(`/maintainer/pr/${pr.id}`)}>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
