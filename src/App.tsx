@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import AdminRepositories from './components/pages/AdminRepositories';
+import RepoSection from './components/pages/RepoSection';
 
 // Import pages
 import Login from './pages/Login';
@@ -62,6 +64,8 @@ function App() {
                 </PublicRoute>
               } 
             />
+            <Route path="/admin/repositories" element={<AdminRepositories />} />
+            <Route path="/repositories/:slug" element={<RepoSection />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
             
             {/* Contributor routes nested under Layout (shared navbar/layout) */}
