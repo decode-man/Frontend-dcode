@@ -17,8 +17,11 @@ import {
   Target,
   TrendingUp,
   XCircle
-} from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
+} from 'lucide-react';                    <p className="text-sm text-gray-700">{formatDate(currentIssue.createdAt)}</p>
+                  </div>
+                  <div>
+                    <CardTitle className="text-sm font-medium text-gray-600">Last Updated</CardTitle>
+                    <p className="text-sm text-gray-700">{formatDate(currentIssue.updatedAt)}</p>rt { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
 import { Textarea } from '../components/ui/textarea';
 import { Label } from '../components/ui/label';
 import { useAuth } from '../context/AuthContext';
@@ -275,45 +278,6 @@ const getMockLeaderboard = (): LeaderboardEntry[] => {
       streak: 19,
       lastActivity: '2024-10-01',
       badges: ['Theme Expert', 'JSON Specialist', 'Configuration Master']
-    },
-    {
-      id: '6',
-      rank: 6,
-      username: 'deepak1556',
-      avatar: 'https://avatars.githubusercontent.com/u/1770714?v=4',
-      name: 'Deepak Mohan',
-      issuesResolved: 692,
-      pullRequestsMerged: 423,
-      contributionScore: 6234,
-      streak: 15,
-      lastActivity: '2024-09-30',
-      badges: ['Electron Expert', 'Security Specialist', 'Build Master']
-    },
-    {
-      id: '7',
-      rank: 7,
-      username: 'bpasero',
-      avatar: 'https://avatars.githubusercontent.com/u/900690?v=4',
-      name: 'Benjamin Pasero',
-      issuesResolved: 634,
-      pullRequestsMerged: 378,
-      contributionScore: 5867,
-      streak: 12,
-      lastActivity: '2024-09-29',
-      badges: ['Workbench Expert', 'File System Guru', 'Performance Optimizer']
-    },
-    {
-      id: '8',
-      rank: 8,
-      username: 'kieferrm',
-      avatar: 'https://avatars.githubusercontent.com/u/8526665?v=4',
-      name: 'Kai Maetzel',
-      issuesResolved: 567,
-      pullRequestsMerged: 345,
-      contributionScore: 5234,
-      streak: 8,
-      lastActivity: '2024-09-28',
-      badges: ['Debug Expert', 'Protocol Specialist', 'Testing Champion']
     }
   ];
 };
@@ -355,36 +319,52 @@ const MaintainerIssueDetail: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
+  // State for close issue functionality
+  const [isCloseDialogOpen, setIsCloseDialogOpen] = React.useState(false);
+  const [closeReason, setCloseReason] = React.useState('');
+  const [currentIssue, setCurrentIssue] = React.useState(() => getMockIssue(issueId || ''));
+
   if (!user || user.role !== 'maintainer') {
     navigate('/login');
     return null;
   }
 
-  // State for close issue functionality
-  const [isCloseDialogOpen, setIsCloseDialogOpen] = React.useState(false);
-  const [closeReason, setCloseReason] = React.useState('');
-  const [currentIssue, setCurrentIssue] = React.useState(() => getMockIssue(issueId || ''));
-  
   const comments = getMockComments();
   const leaderboard = getMockLeaderboard();
 
-  // Handler functions
+  const handleBack = () => {
+    navigate(-1);
+  };
+
   const handleCloseIssue = () => {
-    if (closeReason.trim()) {
-      setCurrentIssue(prev => ({ ...prev, status: 'closed' }));
-      setIsCloseDialogOpen(false);
-      setCloseReason('');
-      // TODO: Add API call to close issue
+    if (!closeReason.trim()) {
+      alert('Please provide a reason for closing the issue');
+      return;
     }
+
+    // Update the issue status
+    setCurrentIssue(prev => ({ ...prev, status: 'closed' as const }));
+    
+    // Here you would typically make an API call to close the issue
+    console.log('Closing issue:', { issueId, reason: closeReason });
+    
+    // Reset form and close dialog
+    setCloseReason('');
+    setIsCloseDialogOpen(false);
+    
+    // Show success message
+    alert('Issue closed successfully!');
   };
 
   const handleReopenIssue = () => {
-    setCurrentIssue(prev => ({ ...prev, status: 'open' }));
-    // TODO: Add API call to reopen issue
-  };
-
-  const handleBack = () => {
-    navigate(-1);
+    // Update the issue status
+    setCurrentIssue(prev => ({ ...prev, status: 'open' as const }));
+    
+    // Here you would typically make an API call to reopen the issue
+    console.log('Reopening issue:', issueId);
+    
+    // Show success message
+    alert('Issue reopened successfully!');
   };
 
   return (
@@ -434,7 +414,7 @@ const MaintainerIssueDetail: React.FC = () => {
                 }>
                   {currentIssue.status}
                 </Badge>
-                {currentIssue.labels.map((label, index) => (
+                {currentIssue.labels.map((label: string, index: number) => (
                   <Badge key={index} variant="secondary" className="text-xs">
                     {label}
                   </Badge>
@@ -448,59 +428,6 @@ const MaintainerIssueDetail: React.FC = () => {
                   View on GitHub
                 </a>
               </Button>
-              
-              {/* Close/Reopen Issue Button */}
-              {currentIssue.status === 'open' ? (
-                <Dialog open={isCloseDialogOpen} onOpenChange={setIsCloseDialogOpen}>
-                  <DialogTrigger asChild>
-                    <Button variant="destructive">
-                      <XCircle className="w-4 h-4 mr-2" />
-                      Close Issue
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-md">
-                    <DialogHeader>
-                      <DialogTitle>Close Issue</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4">
-                      <div>
-                        <Label htmlFor="close-reason">Reason for closing (required)</Label>
-                        <Textarea
-                          id="close-reason"
-                          placeholder="Please provide a reason for closing this issue..."
-                          value={closeReason}
-                          onChange={(e) => setCloseReason(e.target.value)}
-                          className="mt-1"
-                        />
-                      </div>
-                      <div className="flex justify-end gap-2">
-                        <Button
-                          variant="outline"
-                          onClick={() => setIsCloseDialogOpen(false)}
-                        >
-                          Cancel
-                        </Button>
-                        <Button
-                          variant="destructive"
-                          onClick={handleCloseIssue}
-                          disabled={!closeReason.trim()}
-                        >
-                          Close Issue
-                        </Button>
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-              ) : (
-                <Button
-                  variant="default"
-                  onClick={handleReopenIssue}
-                  className="bg-green-600 hover:bg-green-700"
-                >
-                  <CircleDot className="w-4 h-4 mr-2" />
-                  Reopen Issue
-                </Button>
-              )}
             </div>
           </div>
         </div>
@@ -615,11 +542,11 @@ const MaintainerIssueDetail: React.FC = () => {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-600 mb-1">Created</p>
-                    <p className="text-sm text-gray-700">{formatDate(currentIssue.createdAt)}</p>
+                    <p className="text-sm text-gray-700">{formatDate(issue.createdAt)}</p>
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-600 mb-1">Last Updated</p>
-                    <p className="text-sm text-gray-700">{formatDate(currentIssue.updatedAt)}</p>
+                    <p className="text-sm text-gray-700">{formatDate(issue.updatedAt)}</p>
                   </div>
                 </div>
               </CardContent>
@@ -695,6 +622,10 @@ const MaintainerIssueDetail: React.FC = () => {
                     <div className="flex items-center justify-center mb-1">
                       <Star className="w-4 h-4 text-green-600" />
                     </div>
+                                        <p className="text-lg font-bold text-blue-900">{currentIssue.comments}</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-sm text-gray-600 font-medium mb-1">Priority</div>
                     <p className="text-lg font-bold text-green-900">{currentIssue.priority}</p>
                     <p className="text-xs text-green-600">Priority</p>
                   </div>
