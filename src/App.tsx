@@ -14,7 +14,9 @@ import ContributorProfilePage from './pages/ContributorProfile';
 import Layout from './components/Layout';
 import AdminDashboard from './pages/AdminDashboard';
 import MaintainerDashboard from './pages/MaintainerDashboard';
-import LeaderboardPage from './pages/Leaderboard';
+import OrganizationDetail from './pages/OrganizationDetail';
+import RepositoryDetail from './pages/RepositoryDetail';
+import IssueDetail from './pages/IssueDetail';
 
 // Protected Route component
 const ProtectedRoute: React.FC<{ children: React.ReactNode; allowedRoles?: string[] }> = ({ 
@@ -89,6 +91,30 @@ function App() {
                 <ProtectedRoute allowedRoles={['admin']}>
                   <AdminDashboard />
                   {/* <LeaderboardPage /> */}
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/organization/:id" 
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <OrganizationDetail />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/repository/:repoId" 
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <RepositoryDetail />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/issue/:issueId" 
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <IssueDetail />
                 </ProtectedRoute>
               } 
             />
