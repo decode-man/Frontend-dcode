@@ -262,7 +262,7 @@ const MaintainerDashboard: React.FC = () => {
               <Button 
                 variant="outline" 
                 onClick={() => navigate('/maintainer-profile/1')}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 bg-black text-white text-md font-medium rounded-lg py-5 hover:bg-gray-900 transition-colors hover:text-white cursor-pointer"
               >
                 <User className="w-4 h-4" />
                 View Full Profile
