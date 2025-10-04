@@ -106,10 +106,6 @@ const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
   const organizations = mockOrganizations;
 
-  const handleOrganizationClick = (orgId: string) => {
-    navigate(`/admin/organization/${orgId}`);
-  };
-
   const getStatusBadge = (status: Organization['status']) => {
     const statusStyles = {
       Active: 'bg-green-100 text-green-800 border-green-200',
@@ -186,8 +182,7 @@ const AdminDashboard: React.FC = () => {
           {organizations.map((org) => (
             <Card 
               key={org.id} 
-              className="hover:shadow-lg transition-all duration-200 border-2 hover:border-primary/20 cursor-pointer"
-              onClick={() => handleOrganizationClick(org.id)}
+              className="hover:shadow-lg transition-all duration-200 border-2 hover:border-primary/20"
             >
               <CardHeader className="pb-4">
                 <div className="flex items-start justify-between">

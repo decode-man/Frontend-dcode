@@ -17,6 +17,9 @@ import MaintainerDashboard from './pages/MaintainerDashboard';
 import OrganizationDetail from './pages/OrganizationDetail';
 import RepositoryDetail from './pages/RepositoryDetail';
 import IssueDetail from './pages/IssueDetail';
+import MaintainerOrganizationDetail from './pages/MaintainerOrganizationDetail';
+import MaintainerRepositoryDetail from './pages/MaintainerRepositoryDetail';
+import MaintainerIssueDetail from './pages/MaintainerIssueDetail';
 
 // Protected Route component
 const ProtectedRoute: React.FC<{ children: React.ReactNode; allowedRoles?: string[] }> = ({ 
@@ -125,6 +128,30 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={['maintainer']}>
                   <MaintainerDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/maintainer/organization/:id" 
+              element={
+                <ProtectedRoute allowedRoles={['maintainer']}>
+                  <MaintainerOrganizationDetail />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/maintainer/repository/:repoId" 
+              element={
+                <ProtectedRoute allowedRoles={['maintainer']}>
+                  <MaintainerRepositoryDetail />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/maintainer/issue/:issueId" 
+              element={
+                <ProtectedRoute allowedRoles={['maintainer']}>
+                  <MaintainerIssueDetail />
                 </ProtectedRoute>
               } 
             />
