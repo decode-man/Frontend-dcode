@@ -17,7 +17,8 @@ import {
   XCircle,
   MessageSquare,
   User,
-  ExternalLink
+  ExternalLink,
+  Plus
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -385,12 +386,21 @@ const MaintainerRepositoryDetail: React.FC = () => {
               <h1 className="text-3xl font-bold text-gray-900">{repository.name}</h1>
               <p className="text-gray-600 mt-1">{repository.organization} • Repository</p>
             </div>
-            <Button variant="outline" asChild>
-              <a href={repository.url} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="w-4 h-4 mr-2" />
-                View on GitHub
-              </a>
-            </Button>
+            <div className="flex gap-3">
+              <Button 
+                className="bg-[#008236] hover:bg-[#006b2d] text-white"
+                onClick={() => console.log('Create issue clicked')}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Create Issue
+              </Button>
+              <Button variant="outline" asChild>
+                <a href={repository.url} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="w-4 h-4 mr-2" />
+                  View on GitHub
+                </a>
+              </Button>
+            </div>
           </div>
         </div>
       </div>
