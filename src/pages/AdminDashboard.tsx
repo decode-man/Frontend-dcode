@@ -246,31 +246,45 @@ const AdminDashboard: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex gap-2 mt-6">
+                <div className="space-y-2 mt-6">
                   <Button 
-                    variant="outline" 
+                    variant="default" 
                     size="sm" 
-                    className="flex-1 hover:bg-primary/5 hover:border-primary/20"
+                    className="w-full bg-primary hover:bg-primary/90 text-white"
                     onClick={(e) => {
                       e.stopPropagation();
-                      navigate(`/admin/organization/${org.id}/add-maintainer`);
+                      navigate(`/admin/organization/${org.id}/maintainers`);
                     }}
                   >
-                    <UserPlus className="w-4 h-4 mr-1" />
-                    Add Maintainers
+                    <Users className="w-4 h-4 mr-2" />
+                    View Maintainers ({org.maintainerCount})
                   </Button>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="flex-1 hover:bg-primary/5 hover:border-primary/20"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/admin/organization/${org.id}/settings`);
-                    }}
-                  >
-                    <Settings className="w-4 h-4 mr-1" />
-                    Manage
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="flex-1 hover:bg-primary/5 hover:border-primary/20"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/admin/organization/${org.id}/add-maintainer`);
+                      }}
+                    >
+                      <UserPlus className="w-4 h-4 mr-1" />
+                      Add Maintainers
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="flex-1 hover:bg-primary/5 hover:border-primary/20"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/admin/organization/${org.id}/settings`);
+                      }}
+                    >
+                      <Settings className="w-4 h-4 mr-1" />
+                      Manage
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
