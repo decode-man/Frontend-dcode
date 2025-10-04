@@ -9,6 +9,7 @@ import ContributorOnboarding from './pages/ContributorOnboarding';
 import MyRepositories from './pages/MyRepositories';
 import ContributedRepositories from './pages/ContributedRepositories';
 import ContributorProfilePage from './pages/ContributorProfile';
+import Layout from './components/Layout';
 import AdminDashboard from './pages/AdminDashboard';
 import MaintainerDashboard from './pages/MaintainerDashboard';
 
@@ -62,39 +63,19 @@ function App() {
             />
             <Route path="/auth/callback" element={<AuthCallback />} />
             
-            {/* Contributor routes */}
-            <Route 
-              path="/contributor/onboarding" 
+            {/* Contributor routes nested under Layout (shared navbar/layout) */}
+            <Route
               element={
                 <ProtectedRoute allowedRoles={['contributor']}>
-                  <ContributorOnboarding />
+                  <Layout />
                 </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/contributor/my-repos" 
-              element={
-                <ProtectedRoute allowedRoles={['contributor']}>
-                  <MyRepositories />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/contributor/profile" 
-              element={
-                <ProtectedRoute allowedRoles={['contributor']}>
-                  <ContributorProfilePage />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/contributor/contributed-repos" 
-              element={
-                <ProtectedRoute allowedRoles={['contributor']}>
-                  <ContributedRepositories />
-                </ProtectedRoute>
-              } 
-            />
+              }
+            >
+              <Route path="/contributor/onboarding" element={<ContributorOnboarding />} />
+              <Route path="/contributor/my-repos" element={<MyRepositories />} />
+              <Route path="/contributor/contributed-repos" element={<ContributedRepositories />} />
+              <Route path="/contributor/profile" element={<ContributorProfilePage />} />
+            </Route>
             
             {/* Admin routes */}
             <Route 
