@@ -594,14 +594,6 @@ const MaintainerOrganizationDetail: React.FC = () => {
                         View on GitHub
                       </a>
                     </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => navigate(`/maintainer/repository/${repo.id}/maintainers`)}
-                    >
-                      <UserPlus className="w-4 h-4 mr-1" />
-                      Manage Maintainers
-                    </Button>
                   </div>
                 </div>
               </CardContent>
