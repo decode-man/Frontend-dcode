@@ -180,8 +180,8 @@ const AdminDashboard: React.FC = () => {
         {/* Organizations Grid */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {organizations.map((org) => (
-            <Card 
-              key={org.id} 
+            <Card
+              key={org.id}
               className="hover:shadow-lg transition-all duration-200 border-2 hover:border-primary/20"
             >
               <CardHeader className="pb-4">
@@ -208,7 +208,7 @@ const AdminDashboard: React.FC = () => {
                 <CardDescription className="text-sm text-gray-600 mb-4 line-clamp-3">
                   {org.description}
                 </CardDescription>
-                
+
                 <div className="space-y-3">
                   <div className="flex items-center gap-2 text-sm text-gray-600">
                     <Users className="w-4 h-4 text-gray-400" />
@@ -218,10 +218,52 @@ const AdminDashboard: React.FC = () => {
                     <Building2 className="w-4 h-4 text-gray-400" />
                     <span>{org.repositoryCount} repositories</span>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <UserPlus className="w-4 h-4 text-gray-400" />
-                    <span>{org.maintainerCount} maintainers</span>
+
+                  {/* Enhanced Maintainer Section */}
+                  <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-lg p-3 border border-primary/20">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
+                          <UserPlus className="w-4 h-4 text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-semibold text-gray-900">Maintainers</p>
+                          <p className="text-xs text-gray-600">{org.maintainerCount} active maintainers</p>
+                        </div>
+                      </div>
+                      <Badge className="bg-primary/10 text-primary border-primary/20 font-medium">
+                        {org.maintainerCount}
+                      </Badge>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button
+                        variant="default"
+                        size="sm"
+                        className="bg-primary hover:bg-primary/90 text-white shadow-sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/admin/organization/${org.id}/maintainers`);
+                        }}
+                      >
+                        <Users className="w-3 h-3 mr-1" />
+                        View All
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-primary/30 text-primary hover:bg-primary hover:text-white transition-colors"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/admin/organization/${org.id}/add-maintainer`);
+                        }}
+                      >
+                        <UserPlus className="w-3 h-3 mr-1" />
+                        Add New
+                      </Button>
+                    </div>
                   </div>
+
                   <div className="flex items-center gap-2 text-sm text-gray-600">
                     <Mail className="w-4 h-4 text-gray-400" />
                     <span className="truncate">{org.email}</span>
@@ -246,45 +288,20 @@ const AdminDashboard: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="space-y-2 mt-6">
-                  <Button 
-                    variant="default" 
-                    size="sm" 
-                    className="w-full bg-primary hover:bg-primary/90 text-white"
+                {/* Organization Management Actions */}
+                <div className="mt-6 pt-4 border-t border-gray-100">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full hover:bg-gray-50 hover:border-gray-300"
                     onClick={(e) => {
                       e.stopPropagation();
-                      navigate(`/admin/organization/${org.id}/maintainers`);
+                      navigate(`/admin/organization/${org.id}/settings`);
                     }}
                   >
-                    <Users className="w-4 h-4 mr-2" />
-                    View Maintainers ({org.maintainerCount})
+                    <Settings className="w-4 h-4 mr-2" />
+                    Organization Settings
                   </Button>
-                  <div className="flex gap-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="flex-1 hover:bg-primary/5 hover:border-primary/20"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/admin/organization/${org.id}/add-maintainer`);
-                      }}
-                    >
-                      <UserPlus className="w-4 h-4 mr-1" />
-                      Add Maintainers
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="flex-1 hover:bg-primary/5 hover:border-primary/20"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/admin/organization/${org.id}/settings`);
-                      }}
-                    >
-                      <Settings className="w-4 h-4 mr-1" />
-                      Manage
-                    </Button>
-                  </div>
                 </div>
               </CardContent>
             </Card>

@@ -6,17 +6,18 @@ import { Badge } from '../components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import { Progress } from '../components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
-import { 
-  ArrowLeft, 
-  GitPullRequest, 
-  GitMerge, 
-  CheckCircle, 
-  Calendar, 
-  Github, 
-  Mail, 
+import {
+  ArrowLeft,
+  GitPullRequest,
+  GitMerge,
+  CheckCircle,
+  Calendar,
+  Github,
+  Mail,
   MapPin,
   Activity,
-  Building2
+  Building2,
+  MessageSquare
 } from 'lucide-react';
 
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
@@ -256,39 +257,160 @@ const getMockMaintainerProfile = (maintainerId: string): MaintainerProfile => {
           repository: 'react',
           timestamp: '3 hours ago'
         }
-      ]
+      ],
+      metrics: {
+        codeReviews: {
+          total: 892,
+          approved: 758,
+          changesRequested: 112,
+          commented: 22,
+          averageResponseTime: '1.2 hours'
+        },
+        issueManagement: {
+          opened: 34,
+          closed: 78,
+          labeled: 156,
+          assigned: 89,
+          avgTimeToClose: '2.5 days'
+        },
+        communityInteraction: {
+          prComments: 445,
+          issueComments: 278,
+          discussionReplies: 123,
+          mentionsReceived: 567,
+          reactionsSent: 1234
+        },
+        documentation: {
+          docCommits: 23,
+          readmeUpdates: 8,
+          wikiEdits: 12,
+          docImprovements: 15
+        },
+        contributions: {
+          totalPRsMerged: 165,
+          linesAdded: 12450,
+          linesDeleted: 5230,
+          filesChanged: 892,
+          commitCount: 456
+        },
+        sentimentData: {
+          weekly: [
+            { week: "Week 1", positive: 88, neutral: 10, negative: 2 },
+            { week: "Week 2", positive: 92, neutral: 6, negative: 2 },
+            { week: "Week 3", positive: 85, neutral: 12, negative: 3 },
+            { week: "Week 4", positive: 94, neutral: 5, negative: 1 }
+          ]
+        }
+      }
     }
   };
-  
+
   return maintainers[maintainerId] || maintainers['1'];
 };
 
-const SentimentTemperature = ({ data }) => {
-  const avgPositive = data.reduce((acc, week) => acc + week.positive, 0) / data.length;
-  
+const SentimentTemperature: React.FC<{ data: Array<{ week: string; positive: number; neutral: number; negative: number }> }> = ({ data }) => {
+  const avgPositive = data.reduce((sum, item) => sum + item.positive, 0) / data.length;
+  const avgNeutral = data.reduce((sum, item) => sum + item.neutral, 0) / data.length;
+  const avgNegative = data.reduce((sum, item) => sum + item.negative, 0) / data.length;
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Sentiment Temperature</CardTitle>
-        <CardDescription>Review tone analysis over time</CardDescription>
+    <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-white to-gray-50">
+      <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+            <Activity className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <CardTitle className="text-xl font-bold text-gray-900">Sentiment Temperature</CardTitle>
+            <CardDescription className="text-gray-600">Review tone analysis over time</CardDescription>
+          </div>
+        </div>
       </CardHeader>
-      <CardContent>
-        <div className="h-64">
+      <CardContent className="p-6">
+        <div className="h-80 mb-6">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={data}>
-              <XAxis dataKey="week" />
-              <YAxis />
-              <Tooltip />
-              <Line type="monotone" dataKey="positive" stroke="#059669" strokeWidth={2} />
-              <Line type="monotone" dataKey="neutral" stroke="#D97706" strokeWidth={2} /> 
-              <Line type="monotone" dataKey="negative" stroke="#DC2626" strokeWidth={2} />
+            <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+              <XAxis
+                dataKey="week"
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 12, fill: '#6B7280' }}
+              />
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 12, fill: '#6B7280' }}
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: 'white',
+                  border: 'none',
+                  borderRadius: '12px',
+                  boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
+                  padding: '12px'
+                }}
+                labelStyle={{ fontWeight: 'bold', color: '#374151' }}
+              />
+              <Line
+                type="monotone"
+                dataKey="positive"
+                stroke="#10B981"
+                strokeWidth={3}
+                dot={{ fill: '#10B981', strokeWidth: 2, r: 4 }}
+                activeDot={{ r: 6, fill: '#10B981', stroke: 'white', strokeWidth: 2 }}
+              />
+              <Line
+                type="monotone"
+                dataKey="neutral"
+                stroke="#F59E0B"
+                strokeWidth={3}
+                dot={{ fill: '#F59E0B', strokeWidth: 2, r: 4 }}
+                activeDot={{ r: 6, fill: '#F59E0B', stroke: 'white', strokeWidth: 2 }}
+              />
+              <Line
+                type="monotone"
+                dataKey="negative"
+                stroke="#EF4444"
+                strokeWidth={3}
+                dot={{ fill: '#EF4444', strokeWidth: 2, r: 4 }}
+                activeDot={{ r: 6, fill: '#EF4444', stroke: 'white', strokeWidth: 2 }}
+              />
             </LineChart>
           </ResponsiveContainer>
         </div>
-        <div className="mt-4 flex items-center justify-center gap-2">
-          <div className="text-center">
-            <div className="text-2xl font-bold text-green-700">{avgPositive.toFixed(1)}%</div>
-            <div className="text-sm text-gray-600">Average Positive Sentiment</div>
+
+        {/* Enhanced Statistics Grid */}
+        <div className="grid grid-cols-3 gap-4">
+          <div className="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-100">
+            <div className="text-3xl font-bold text-green-600 mb-1">{avgPositive.toFixed(1)}%</div>
+            <div className="text-sm font-medium text-green-700">Positive</div>
+            <div className="text-xs text-gray-500 mt-1">Average sentiment</div>
+          </div>
+          <div className="text-center p-4 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl border border-yellow-100">
+            <div className="text-3xl font-bold text-yellow-600 mb-1">{avgNeutral.toFixed(1)}%</div>
+            <div className="text-sm font-medium text-yellow-700">Neutral</div>
+            <div className="text-xs text-gray-500 mt-1">Average sentiment</div>
+          </div>
+          <div className="text-center p-4 bg-gradient-to-br from-red-50 to-pink-50 rounded-xl border border-red-100">
+            <div className="text-3xl font-bold text-red-600 mb-1">{avgNegative.toFixed(1)}%</div>
+            <div className="text-sm font-medium text-red-700">Negative</div>
+            <div className="text-xs text-gray-500 mt-1">Average sentiment</div>
+          </div>
+        </div>
+
+        {/* Legend */}
+        <div className="flex items-center justify-center gap-6 mt-6 pt-4 border-t border-gray-100">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+            <span className="text-sm text-gray-600">Positive</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+            <span className="text-sm text-gray-600">Neutral</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+            <span className="text-sm text-gray-600">Negative</span>
           </div>
         </div>
       </CardContent>
@@ -324,12 +446,12 @@ export default function MaintainerProfile() {
   const navigate = useNavigate();
   const maintainer = getMockMaintainerProfile(maintainerId || '1');
 
-  const prMergeRate = maintainer.stats.prsCreated > 0 
-    ? (maintainer.stats.prsMerged / maintainer.stats.prsCreated) * 100 
+  const prMergeRate = maintainer.stats.prsCreated > 0
+    ? (maintainer.stats.prsMerged / maintainer.stats.prsCreated) * 100
     : 0;
 
-  const issueCloseRate = maintainer.stats.issuesCreated > 0 
-    ? (maintainer.stats.issuesClosed / maintainer.stats.issuesCreated) * 100 
+  const issueCloseRate = maintainer.stats.issuesCreated > 0
+    ? (maintainer.stats.issuesClosed / maintainer.stats.issuesCreated) * 100
     : 0;
 
   return (
@@ -338,9 +460,9 @@ export default function MaintainerProfile() {
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center gap-4">
-            <Button 
-              variant="ghost" 
-              size="sm" 
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => navigate(-1)}
               className="flex items-center gap-2"
             >
@@ -369,7 +491,7 @@ export default function MaintainerProfile() {
                 </AvatarFallback>
               </Avatar>
             </div>
-            
+
             <div className="flex-1">
               <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-4">
                 <div>
@@ -379,7 +501,7 @@ export default function MaintainerProfile() {
                     {maintainer.role === 'lead_maintainer' ? 'Lead Maintainer' : 'Maintainer'}
                   </Badge>
                 </div>
-                
+
                 <div className="flex gap-2">
                   <Button variant="outline" asChild>
                     <a href={maintainer.githubUrl} target="_blank" rel="noopener noreferrer">
@@ -395,9 +517,9 @@ export default function MaintainerProfile() {
                   </Button>
                 </div>
               </div>
-              
+
               <p className="text-gray-700 mb-6 leading-relaxed">{maintainer.bio}</p>
-              
+
               <div className="flex flex-wrap gap-4 text-sm text-gray-600">
                 <div className="flex items-center gap-1">
                   <MapPin className="w-4 h-4" />
@@ -472,6 +594,7 @@ export default function MaintainerProfile() {
             <TabsTrigger value="activity">Recent Activity</TabsTrigger>
             <TabsTrigger value="repositories">Repositories</TabsTrigger>
             <TabsTrigger value="stats">Detailed Stats</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
           </TabsList>
 
           <TabsContent value="activity">
@@ -576,97 +699,137 @@ export default function MaintainerProfile() {
                 </CardContent>
               </Card>
 
-              <Card>
-      <CardHeader>
-        <CardTitle>Code Review Impact</CardTitle>
-        <CardDescription>Review patterns and effectiveness</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <span>Total Reviews</span>
-            <span className="font-bold text-green-600">{maintainer.metrics.codeReviews.total}</span>
-          </div>
-          <div>
-            <div className="flex justify-between mb-2">
-              <span>Approval Rate</span>
-              <span className="font-bold text-green-600">
-                {((maintainer.metrics.codeReviews.approved / maintainer.metrics.codeReviews.total) * 100).toFixed(1)}%
-              </span>
-            </div>
-            <Progress 
-              value={(maintainer.metrics.codeReviews.approved / maintainer.metrics.codeReviews.total) * 100} 
-              className="h-2"
-            />
-          </div>
-          <div className="grid grid-cols-3 gap-4 text-center">
-            <div>
-              <div className="text-lg font-bold text-green-600">
-                {maintainer.metrics.codeReviews.approved}
-              </div>
-              <div className="text-sm text-gray-600">Approved</div>
-            </div>
-            <div>
-              <div className="text-lg font-bold text-orange-600">
-                {maintainer.metrics.codeReviews.changesRequested}
-              </div>
-              <div className="text-sm text-gray-600">Changes Requested</div>
-            </div>
-            <div>
-              <div className="text-lg font-bold text-blue-600">
-                {maintainer.metrics.codeReviews.averageResponseTime}
-              </div>
-              <div className="text-sm text-gray-600">Avg Response Time</div>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+              <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-white to-gray-50">
+                <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 border-b">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
+                      <CheckCircle className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-xl font-bold text-gray-900">Code Review Impact</CardTitle>
+                      <CardDescription className="text-gray-600">Review patterns and effectiveness</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <div className="space-y-6">
+                    {/* Total Reviews Highlight */}
+                    <div className="text-center p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-100">
+                      <div className="text-4xl font-bold text-green-600 mb-2">{maintainer.metrics.codeReviews.total}</div>
+                      <div className="text-lg font-medium text-gray-700">Total Reviews</div>
+                      <div className="text-sm text-gray-500">This month</div>
+                    </div>
 
-    <Card>
-      <CardHeader>
-        <CardTitle>Community Engagement</CardTitle>
-        <CardDescription>Interaction with contributors</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-6">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <div className="text-2xl font-bold text-purple-600">
-                {maintainer.metrics.communityInteraction.prComments + 
-                 maintainer.metrics.communityInteraction.issueComments}
-              </div>
-              <div className="text-sm text-gray-600">Total Comments</div>
-            </div>
-            <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <div className="text-2xl font-bold text-blue-600">
-                {maintainer.metrics.communityInteraction.discussionReplies}
-              </div>
-              <div className="text-sm text-gray-600">Discussion Replies</div>
-            </div>
-          </div>
-          <div>
-            <h4 className="font-medium mb-2">Engagement Breakdown</h4>
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <span>PR Comments</span>
-                <span className="font-medium">{maintainer.metrics.communityInteraction.prComments}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span>Issue Comments</span>
-                <span className="font-medium">{maintainer.metrics.communityInteraction.issueComments}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span>Mentions Received</span>
-                <span className="font-medium">{maintainer.metrics.communityInteraction.mentionsReceived}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+                    {/* Approval Rate with Enhanced Progress */}
+                    <div className="bg-white p-4 rounded-xl border border-gray-100">
+                      <div className="flex justify-between mb-3">
+                        <span className="font-medium text-gray-700">Approval Rate</span>
+                        <span className="font-bold text-2xl text-green-600">
+                          {((maintainer.metrics.codeReviews.approved / maintainer.metrics.codeReviews.total) * 100).toFixed(1)}%
+                        </span>
+                      </div>
+                      <div className="relative">
+                        <Progress
+                          value={(maintainer.metrics.codeReviews.approved / maintainer.metrics.codeReviews.total) * 100}
+                          className="h-3 bg-gray-100"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full"
+                          style={{ width: `${(maintainer.metrics.codeReviews.approved / maintainer.metrics.codeReviews.total) * 100}%` }}>
+                        </div>
+                      </div>
+                    </div>
 
-                <SentimentTemperature data={maintainer.metrics.sentimentData.weekly} />
+                    {/* Enhanced Statistics Grid */}
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-100 hover:shadow-md transition-shadow">
+                        <div className="text-2xl font-bold text-green-600 mb-1">
+                          {maintainer.metrics.codeReviews.approved}
+                        </div>
+                        <div className="text-sm font-medium text-green-700">Approved</div>
+                        <div className="text-xs text-gray-500 mt-1">Reviews</div>
+                      </div>
+                      <div className="text-center p-4 bg-gradient-to-br from-orange-50 to-yellow-50 rounded-xl border border-orange-100 hover:shadow-md transition-shadow">
+                        <div className="text-2xl font-bold text-orange-600 mb-1">
+                          {maintainer.metrics.codeReviews.changesRequested}
+                        </div>
+                        <div className="text-sm font-medium text-orange-700">Changes</div>
+                        <div className="text-xs text-gray-500 mt-1">Requested</div>
+                      </div>
+                      <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-100 hover:shadow-md transition-shadow">
+                        <div className="text-2xl font-bold text-blue-600 mb-1">
+                          {maintainer.metrics.codeReviews.averageResponseTime}
+                        </div>
+                        <div className="text-sm font-medium text-blue-700">Response</div>
+                        <div className="text-xs text-gray-500 mt-1">Time</div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-white to-gray-50">
+                <CardHeader className="bg-gradient-to-r from-purple-50 to-indigo-50 border-b">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                      <MessageSquare className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-xl font-bold text-gray-900">Community Engagement</CardTitle>
+                      <CardDescription className="text-gray-600">Interaction with contributors</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <div className="space-y-6">
+                    {/* Enhanced Main Stats */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="text-center p-6 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl border border-purple-100 hover:shadow-md transition-all">
+                        <div className="text-3xl font-bold text-purple-600 mb-2">
+                          {maintainer.metrics.communityInteraction.prComments +
+                            maintainer.metrics.communityInteraction.issueComments}
+                        </div>
+                        <div className="text-sm font-medium text-purple-700">Total Comments</div>
+                        <div className="text-xs text-gray-500 mt-1">PR & Issue comments</div>
+                      </div>
+                      <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-100 hover:shadow-md transition-all">
+                        <div className="text-3xl font-bold text-blue-600 mb-2">
+                          {maintainer.metrics.communityInteraction.discussionReplies}
+                        </div>
+                        <div className="text-sm font-medium text-blue-700">Discussion Replies</div>
+                        <div className="text-xs text-gray-500 mt-1">Community discussions</div>
+                      </div>
+                    </div>
+
+                    {/* Enhanced Engagement Breakdown */}
+                    <div className="bg-white p-5 rounded-xl border border-gray-100">
+                      <h4 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                        <Activity className="w-4 h-4 text-gray-600" />
+                        Engagement Breakdown
+                      </h4>
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg">
+                          <span className="text-sm font-medium text-gray-700">PR Comments</span>
+                          <span className="font-bold text-lg text-purple-600">{maintainer.metrics.communityInteraction.prComments}</span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg">
+                          <span className="text-sm font-medium text-gray-700">Issue Comments</span>
+                          <span className="font-bold text-lg text-blue-600">{maintainer.metrics.communityInteraction.issueComments}</span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg">
+                          <span className="text-sm font-medium text-gray-700">Mentions Received</span>
+                          <span className="font-bold text-lg text-indigo-600">{maintainer.metrics.communityInteraction.mentionsReceived}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="analytics">
+            <div className="space-y-6">
+              <SentimentTemperature data={maintainer.metrics.sentimentData.weekly} />
             </div>
           </TabsContent>
         </Tabs>
