@@ -257,7 +257,51 @@ const getMockMaintainerProfile = (maintainerId: string): MaintainerProfile => {
           repository: 'react',
           timestamp: '3 hours ago'
         }
-      ]
+      ],
+      metrics: {
+        codeReviews: {
+          total: 892,
+          approved: 758,
+          changesRequested: 112,
+          commented: 22,
+          averageResponseTime: '1.2 hours'
+        },
+        issueManagement: {
+          opened: 34,
+          closed: 78,
+          labeled: 156,
+          assigned: 89,
+          avgTimeToClose: '2.5 days'
+        },
+        communityInteraction: {
+          prComments: 445,
+          issueComments: 278,
+          discussionReplies: 123,
+          mentionsReceived: 567,
+          reactionsSent: 1234
+        },
+        documentation: {
+          docCommits: 23,
+          readmeUpdates: 8,
+          wikiEdits: 12,
+          docImprovements: 15
+        },
+        contributions: {
+          totalPRsMerged: 165,
+          linesAdded: 12450,
+          linesDeleted: 5230,
+          filesChanged: 892,
+          commitCount: 456
+        },
+        sentimentData: {
+          weekly: [
+            { week: "Week 1", positive: 88, neutral: 10, negative: 2 },
+            { week: "Week 2", positive: 92, neutral: 6, negative: 2 },
+            { week: "Week 3", positive: 85, neutral: 12, negative: 3 },
+            { week: "Week 4", positive: 94, neutral: 5, negative: 1 }
+          ]
+        }
+      }
     }
   };
 
