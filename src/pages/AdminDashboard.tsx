@@ -180,8 +180,8 @@ const AdminDashboard: React.FC = () => {
         {/* Organizations Grid */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {organizations.map((org) => (
-            <Card 
-              key={org.id} 
+            <Card
+              key={org.id}
               className="hover:shadow-lg transition-all duration-200 border-2 hover:border-primary/20"
             >
               <CardHeader className="pb-4">
@@ -208,7 +208,7 @@ const AdminDashboard: React.FC = () => {
                 <CardDescription className="text-sm text-gray-600 mb-4 line-clamp-3">
                   {org.description}
                 </CardDescription>
-                
+
                 <div className="space-y-3">
                   <div className="flex items-center gap-2 text-sm text-gray-600">
                     <Users className="w-4 h-4 text-gray-400" />
@@ -218,7 +218,7 @@ const AdminDashboard: React.FC = () => {
                     <Building2 className="w-4 h-4 text-gray-400" />
                     <span>{org.repositoryCount} repositories</span>
                   </div>
-                  
+
                   {/* Enhanced Maintainer Section */}
                   <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-lg p-3 border border-primary/20">
                     <div className="flex items-center justify-between mb-3">
@@ -235,11 +235,11 @@ const AdminDashboard: React.FC = () => {
                         {org.maintainerCount}
                       </Badge>
                     </div>
-                    
+
                     <div className="grid grid-cols-2 gap-2">
-                      <Button 
-                        variant="default" 
-                        size="sm" 
+                      <Button
+                        variant="default"
+                        size="sm"
                         className="bg-primary hover:bg-primary/90 text-white shadow-sm"
                         onClick={(e) => {
                           e.stopPropagation();
@@ -249,9 +249,9 @@ const AdminDashboard: React.FC = () => {
                         <Users className="w-3 h-3 mr-1" />
                         View All
                       </Button>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
+                      <Button
+                        variant="outline"
+                        size="sm"
                         className="border-primary/30 text-primary hover:bg-primary hover:text-white transition-colors"
                         onClick={(e) => {
                           e.stopPropagation();
@@ -263,7 +263,7 @@ const AdminDashboard: React.FC = () => {
                       </Button>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center gap-2 text-sm text-gray-600">
                     <Mail className="w-4 h-4 text-gray-400" />
                     <span className="truncate">{org.email}</span>
@@ -290,9 +290,9 @@ const AdminDashboard: React.FC = () => {
 
                 {/* Organization Management Actions */}
                 <div className="mt-6 pt-4 border-t border-gray-100">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
+                  <Button
+                    variant="outline"
+                    size="sm"
                     className="w-full hover:bg-gray-50 hover:border-gray-300"
                     onClick={(e) => {
                       e.stopPropagation();

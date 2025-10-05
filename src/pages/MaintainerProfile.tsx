@@ -6,14 +6,14 @@ import { Badge } from '../components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import { Progress } from '../components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
-import { 
-  ArrowLeft, 
-  GitPullRequest, 
-  GitMerge, 
-  CheckCircle, 
-  Calendar, 
-  Github, 
-  Mail, 
+import {
+  ArrowLeft,
+  GitPullRequest,
+  GitMerge,
+  CheckCircle,
+  Calendar,
+  Github,
+  Mail,
   MapPin,
   Activity,
   Building2,
@@ -260,7 +260,7 @@ const getMockMaintainerProfile = (maintainerId: string): MaintainerProfile => {
       ]
     }
   };
-  
+
   return maintainers[maintainerId] || maintainers['1'];
 };
 
@@ -268,7 +268,7 @@ const SentimentTemperature: React.FC<{ data: Array<{ week: string; positive: num
   const avgPositive = data.reduce((sum, item) => sum + item.positive, 0) / data.length;
   const avgNeutral = data.reduce((sum, item) => sum + item.neutral, 0) / data.length;
   const avgNegative = data.reduce((sum, item) => sum + item.negative, 0) / data.length;
-  
+
   return (
     <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-white to-gray-50">
       <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b">
@@ -286,18 +286,18 @@ const SentimentTemperature: React.FC<{ data: Array<{ week: string; positive: num
         <div className="h-80 mb-6">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-              <XAxis 
-                dataKey="week" 
+              <XAxis
+                dataKey="week"
                 axisLine={false}
                 tickLine={false}
                 tick={{ fontSize: 12, fill: '#6B7280' }}
               />
-              <YAxis 
+              <YAxis
                 axisLine={false}
                 tickLine={false}
                 tick={{ fontSize: 12, fill: '#6B7280' }}
               />
-              <Tooltip 
+              <Tooltip
                 contentStyle={{
                   backgroundColor: 'white',
                   border: 'none',
@@ -307,26 +307,26 @@ const SentimentTemperature: React.FC<{ data: Array<{ week: string; positive: num
                 }}
                 labelStyle={{ fontWeight: 'bold', color: '#374151' }}
               />
-              <Line 
-                type="monotone" 
-                dataKey="positive" 
-                stroke="#10B981" 
+              <Line
+                type="monotone"
+                dataKey="positive"
+                stroke="#10B981"
                 strokeWidth={3}
                 dot={{ fill: '#10B981', strokeWidth: 2, r: 4 }}
                 activeDot={{ r: 6, fill: '#10B981', stroke: 'white', strokeWidth: 2 }}
               />
-              <Line 
-                type="monotone" 
-                dataKey="neutral" 
-                stroke="#F59E0B" 
+              <Line
+                type="monotone"
+                dataKey="neutral"
+                stroke="#F59E0B"
                 strokeWidth={3}
                 dot={{ fill: '#F59E0B', strokeWidth: 2, r: 4 }}
                 activeDot={{ r: 6, fill: '#F59E0B', stroke: 'white', strokeWidth: 2 }}
-              /> 
-              <Line 
-                type="monotone" 
-                dataKey="negative" 
-                stroke="#EF4444" 
+              />
+              <Line
+                type="monotone"
+                dataKey="negative"
+                stroke="#EF4444"
                 strokeWidth={3}
                 dot={{ fill: '#EF4444', strokeWidth: 2, r: 4 }}
                 activeDot={{ r: 6, fill: '#EF4444', stroke: 'white', strokeWidth: 2 }}
@@ -334,7 +334,7 @@ const SentimentTemperature: React.FC<{ data: Array<{ week: string; positive: num
             </LineChart>
           </ResponsiveContainer>
         </div>
-        
+
         {/* Enhanced Statistics Grid */}
         <div className="grid grid-cols-3 gap-4">
           <div className="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-100">
@@ -353,7 +353,7 @@ const SentimentTemperature: React.FC<{ data: Array<{ week: string; positive: num
             <div className="text-xs text-gray-500 mt-1">Average sentiment</div>
           </div>
         </div>
-        
+
         {/* Legend */}
         <div className="flex items-center justify-center gap-6 mt-6 pt-4 border-t border-gray-100">
           <div className="flex items-center gap-2">
@@ -402,12 +402,12 @@ export default function MaintainerProfile() {
   const navigate = useNavigate();
   const maintainer = getMockMaintainerProfile(maintainerId || '1');
 
-  const prMergeRate = maintainer.stats.prsCreated > 0 
-    ? (maintainer.stats.prsMerged / maintainer.stats.prsCreated) * 100 
+  const prMergeRate = maintainer.stats.prsCreated > 0
+    ? (maintainer.stats.prsMerged / maintainer.stats.prsCreated) * 100
     : 0;
 
-  const issueCloseRate = maintainer.stats.issuesCreated > 0 
-    ? (maintainer.stats.issuesClosed / maintainer.stats.issuesCreated) * 100 
+  const issueCloseRate = maintainer.stats.issuesCreated > 0
+    ? (maintainer.stats.issuesClosed / maintainer.stats.issuesCreated) * 100
     : 0;
 
   return (
@@ -416,9 +416,9 @@ export default function MaintainerProfile() {
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center gap-4">
-            <Button 
-              variant="ghost" 
-              size="sm" 
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => navigate(-1)}
               className="flex items-center gap-2"
             >
@@ -447,7 +447,7 @@ export default function MaintainerProfile() {
                 </AvatarFallback>
               </Avatar>
             </div>
-            
+
             <div className="flex-1">
               <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-4">
                 <div>
@@ -457,7 +457,7 @@ export default function MaintainerProfile() {
                     {maintainer.role === 'lead_maintainer' ? 'Lead Maintainer' : 'Maintainer'}
                   </Badge>
                 </div>
-                
+
                 <div className="flex gap-2">
                   <Button variant="outline" asChild>
                     <a href={maintainer.githubUrl} target="_blank" rel="noopener noreferrer">
@@ -473,9 +473,9 @@ export default function MaintainerProfile() {
                   </Button>
                 </div>
               </div>
-              
+
               <p className="text-gray-700 mb-6 leading-relaxed">{maintainer.bio}</p>
-              
+
               <div className="flex flex-wrap gap-4 text-sm text-gray-600">
                 <div className="flex items-center gap-1">
                   <MapPin className="w-4 h-4" />
@@ -656,130 +656,130 @@ export default function MaintainerProfile() {
               </Card>
 
               <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-white to-gray-50">
-      <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 border-b">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
-            <CheckCircle className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <CardTitle className="text-xl font-bold text-gray-900">Code Review Impact</CardTitle>
-            <CardDescription className="text-gray-600">Review patterns and effectiveness</CardDescription>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent className="p-6">
-        <div className="space-y-6">
-          {/* Total Reviews Highlight */}
-          <div className="text-center p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-100">
-            <div className="text-4xl font-bold text-green-600 mb-2">{maintainer.metrics.codeReviews.total}</div>
-            <div className="text-lg font-medium text-gray-700">Total Reviews</div>
-            <div className="text-sm text-gray-500">This month</div>
-          </div>
-          
-          {/* Approval Rate with Enhanced Progress */}
-          <div className="bg-white p-4 rounded-xl border border-gray-100">
-            <div className="flex justify-between mb-3">
-              <span className="font-medium text-gray-700">Approval Rate</span>
-              <span className="font-bold text-2xl text-green-600">
-                {((maintainer.metrics.codeReviews.approved / maintainer.metrics.codeReviews.total) * 100).toFixed(1)}%
-              </span>
-            </div>
-            <div className="relative">
-              <Progress 
-                value={(maintainer.metrics.codeReviews.approved / maintainer.metrics.codeReviews.total) * 100} 
-                className="h-3 bg-gray-100"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full" 
-                   style={{ width: `${(maintainer.metrics.codeReviews.approved / maintainer.metrics.codeReviews.total) * 100}%` }}>
-              </div>
-            </div>
-          </div>
-          
-          {/* Enhanced Statistics Grid */}
-          <div className="grid grid-cols-3 gap-4">
-            <div className="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-100 hover:shadow-md transition-shadow">
-              <div className="text-2xl font-bold text-green-600 mb-1">
-                {maintainer.metrics.codeReviews.approved}
-              </div>
-              <div className="text-sm font-medium text-green-700">Approved</div>
-              <div className="text-xs text-gray-500 mt-1">Reviews</div>
-            </div>
-            <div className="text-center p-4 bg-gradient-to-br from-orange-50 to-yellow-50 rounded-xl border border-orange-100 hover:shadow-md transition-shadow">
-              <div className="text-2xl font-bold text-orange-600 mb-1">
-                {maintainer.metrics.codeReviews.changesRequested}
-              </div>
-              <div className="text-sm font-medium text-orange-700">Changes</div>
-              <div className="text-xs text-gray-500 mt-1">Requested</div>
-            </div>
-            <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-100 hover:shadow-md transition-shadow">
-              <div className="text-2xl font-bold text-blue-600 mb-1">
-                {maintainer.metrics.codeReviews.averageResponseTime}
-              </div>
-              <div className="text-sm font-medium text-blue-700">Response</div>
-              <div className="text-xs text-gray-500 mt-1">Time</div>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+                <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 border-b">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
+                      <CheckCircle className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-xl font-bold text-gray-900">Code Review Impact</CardTitle>
+                      <CardDescription className="text-gray-600">Review patterns and effectiveness</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <div className="space-y-6">
+                    {/* Total Reviews Highlight */}
+                    <div className="text-center p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-100">
+                      <div className="text-4xl font-bold text-green-600 mb-2">{maintainer.metrics.codeReviews.total}</div>
+                      <div className="text-lg font-medium text-gray-700">Total Reviews</div>
+                      <div className="text-sm text-gray-500">This month</div>
+                    </div>
 
-    <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-white to-gray-50">
-      <CardHeader className="bg-gradient-to-r from-purple-50 to-indigo-50 border-b">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center">
-            <MessageSquare className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <CardTitle className="text-xl font-bold text-gray-900">Community Engagement</CardTitle>
-            <CardDescription className="text-gray-600">Interaction with contributors</CardDescription>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent className="p-6">
-        <div className="space-y-6">
-          {/* Enhanced Main Stats */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="text-center p-6 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl border border-purple-100 hover:shadow-md transition-all">
-              <div className="text-3xl font-bold text-purple-600 mb-2">
-                {maintainer.metrics.communityInteraction.prComments + 
-                 maintainer.metrics.communityInteraction.issueComments}
-              </div>
-              <div className="text-sm font-medium text-purple-700">Total Comments</div>
-              <div className="text-xs text-gray-500 mt-1">PR & Issue comments</div>
-            </div>
-            <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-100 hover:shadow-md transition-all">
-              <div className="text-3xl font-bold text-blue-600 mb-2">
-                {maintainer.metrics.communityInteraction.discussionReplies}
-              </div>
-              <div className="text-sm font-medium text-blue-700">Discussion Replies</div>
-              <div className="text-xs text-gray-500 mt-1">Community discussions</div>
-            </div>
-          </div>
-          
-          {/* Enhanced Engagement Breakdown */}
-          <div className="bg-white p-5 rounded-xl border border-gray-100">
-            <h4 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <Activity className="w-4 h-4 text-gray-600" />
-              Engagement Breakdown
-            </h4>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg">
-                <span className="text-sm font-medium text-gray-700">PR Comments</span>
-                <span className="font-bold text-lg text-purple-600">{maintainer.metrics.communityInteraction.prComments}</span>
-              </div>
-              <div className="flex justify-between items-center p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg">
-                <span className="text-sm font-medium text-gray-700">Issue Comments</span>
-                <span className="font-bold text-lg text-blue-600">{maintainer.metrics.communityInteraction.issueComments}</span>
-              </div>
-              <div className="flex justify-between items-center p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg">
-                <span className="text-sm font-medium text-gray-700">Mentions Received</span>
-                <span className="font-bold text-lg text-indigo-600">{maintainer.metrics.communityInteraction.mentionsReceived}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+                    {/* Approval Rate with Enhanced Progress */}
+                    <div className="bg-white p-4 rounded-xl border border-gray-100">
+                      <div className="flex justify-between mb-3">
+                        <span className="font-medium text-gray-700">Approval Rate</span>
+                        <span className="font-bold text-2xl text-green-600">
+                          {((maintainer.metrics.codeReviews.approved / maintainer.metrics.codeReviews.total) * 100).toFixed(1)}%
+                        </span>
+                      </div>
+                      <div className="relative">
+                        <Progress
+                          value={(maintainer.metrics.codeReviews.approved / maintainer.metrics.codeReviews.total) * 100}
+                          className="h-3 bg-gray-100"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full"
+                          style={{ width: `${(maintainer.metrics.codeReviews.approved / maintainer.metrics.codeReviews.total) * 100}%` }}>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Enhanced Statistics Grid */}
+                    <div className="grid grid-cols-3 gap-4">
+                      <div className="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-100 hover:shadow-md transition-shadow">
+                        <div className="text-2xl font-bold text-green-600 mb-1">
+                          {maintainer.metrics.codeReviews.approved}
+                        </div>
+                        <div className="text-sm font-medium text-green-700">Approved</div>
+                        <div className="text-xs text-gray-500 mt-1">Reviews</div>
+                      </div>
+                      <div className="text-center p-4 bg-gradient-to-br from-orange-50 to-yellow-50 rounded-xl border border-orange-100 hover:shadow-md transition-shadow">
+                        <div className="text-2xl font-bold text-orange-600 mb-1">
+                          {maintainer.metrics.codeReviews.changesRequested}
+                        </div>
+                        <div className="text-sm font-medium text-orange-700">Changes</div>
+                        <div className="text-xs text-gray-500 mt-1">Requested</div>
+                      </div>
+                      <div className="text-center p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-100 hover:shadow-md transition-shadow">
+                        <div className="text-2xl font-bold text-blue-600 mb-1">
+                          {maintainer.metrics.codeReviews.averageResponseTime}
+                        </div>
+                        <div className="text-sm font-medium text-blue-700">Response</div>
+                        <div className="text-xs text-gray-500 mt-1">Time</div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-white to-gray-50">
+                <CardHeader className="bg-gradient-to-r from-purple-50 to-indigo-50 border-b">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                      <MessageSquare className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-xl font-bold text-gray-900">Community Engagement</CardTitle>
+                      <CardDescription className="text-gray-600">Interaction with contributors</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <div className="space-y-6">
+                    {/* Enhanced Main Stats */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="text-center p-6 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl border border-purple-100 hover:shadow-md transition-all">
+                        <div className="text-3xl font-bold text-purple-600 mb-2">
+                          {maintainer.metrics.communityInteraction.prComments +
+                            maintainer.metrics.communityInteraction.issueComments}
+                        </div>
+                        <div className="text-sm font-medium text-purple-700">Total Comments</div>
+                        <div className="text-xs text-gray-500 mt-1">PR & Issue comments</div>
+                      </div>
+                      <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-100 hover:shadow-md transition-all">
+                        <div className="text-3xl font-bold text-blue-600 mb-2">
+                          {maintainer.metrics.communityInteraction.discussionReplies}
+                        </div>
+                        <div className="text-sm font-medium text-blue-700">Discussion Replies</div>
+                        <div className="text-xs text-gray-500 mt-1">Community discussions</div>
+                      </div>
+                    </div>
+
+                    {/* Enhanced Engagement Breakdown */}
+                    <div className="bg-white p-5 rounded-xl border border-gray-100">
+                      <h4 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                        <Activity className="w-4 h-4 text-gray-600" />
+                        Engagement Breakdown
+                      </h4>
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg">
+                          <span className="text-sm font-medium text-gray-700">PR Comments</span>
+                          <span className="font-bold text-lg text-purple-600">{maintainer.metrics.communityInteraction.prComments}</span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg">
+                          <span className="text-sm font-medium text-gray-700">Issue Comments</span>
+                          <span className="font-bold text-lg text-blue-600">{maintainer.metrics.communityInteraction.issueComments}</span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg">
+                          <span className="text-sm font-medium text-gray-700">Mentions Received</span>
+                          <span className="font-bold text-lg text-indigo-600">{maintainer.metrics.communityInteraction.mentionsReceived}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </TabsContent>
 

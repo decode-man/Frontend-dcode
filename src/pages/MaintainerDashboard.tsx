@@ -4,16 +4,16 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../co
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
-import { 
-  Shield, 
-  User, 
-  Building2, 
-  Users, 
-  Calendar, 
-  Mail, 
-  Globe, 
-  Github, 
-  UserPlus, 
+import {
+  Shield,
+  User,
+  Building2,
+  Users,
+  Calendar,
+  Mail,
+  Globe,
+  Github,
+  UserPlus,
   Settings,
   GitPullRequest,
   GitMerge,
@@ -23,19 +23,19 @@ import {
   CheckCircle,
   Star
 } from 'lucide-react';
-import { 
-  LineChart, 
-  Line, 
-  AreaChart, 
-  Area, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer, 
-  PieChart, 
-  Pie, 
-  Cell 
+import {
+  LineChart,
+  Line,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell
 } from 'recharts';
 import { useAuth } from '../context/AuthContext';
 
@@ -290,8 +290,8 @@ const MaintainerDashboard: React.FC = () => {
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">Performance Dashboard</h2>
                 <p className="text-gray-600">Your contribution metrics and activity overview</p>
               </div>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={() => navigate('/maintainer-profile/1')}
                 className="flex items-center gap-2 bg-primary text-white hover:bg-primary/90 border-primary"
               >
@@ -299,7 +299,7 @@ const MaintainerDashboard: React.FC = () => {
                 View Full Profile
               </Button>
             </div>
-            
+
             {/* Enhanced Metrics Charts */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
               {/* PR Merge Rate Chart */}
@@ -327,14 +327,14 @@ const MaintainerDashboard: React.FC = () => {
                       <AreaChart data={prMergeData}>
                         <defs>
                           <linearGradient id="colorMergeRate" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#10B981" stopOpacity={0.3}/>
-                            <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
+                            <stop offset="5%" stopColor="#10B981" stopOpacity={0.3} />
+                            <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
                           </linearGradient>
                         </defs>
                         <CartesianGrid strokeDasharray="3 3" stroke="#D1FAE5" />
                         <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#065F46' }} />
                         <YAxis tick={{ fontSize: 11, fill: '#065F46' }} />
-                        <Tooltip 
+                        <Tooltip
                           contentStyle={{
                             backgroundColor: 'white',
                             border: 'none',
@@ -347,12 +347,12 @@ const MaintainerDashboard: React.FC = () => {
                             name === 'rate' ? 'Merge Rate' : name === 'created' ? 'Created' : 'Merged'
                           ]}
                         />
-                        <Area 
-                          type="monotone" 
-                          dataKey="rate" 
-                          stroke="#10B981" 
-                          fillOpacity={1} 
-                          fill="url(#colorMergeRate)" 
+                        <Area
+                          type="monotone"
+                          dataKey="rate"
+                          stroke="#10B981"
+                          fillOpacity={1}
+                          fill="url(#colorMergeRate)"
                           strokeWidth={3}
                         />
                       </AreaChart>
@@ -397,7 +397,7 @@ const MaintainerDashboard: React.FC = () => {
                         <CartesianGrid strokeDasharray="3 3" stroke="#DBEAFE" />
                         <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#1E40AF' }} />
                         <YAxis tick={{ fontSize: 11, fill: '#1E40AF' }} />
-                        <Tooltip 
+                        <Tooltip
                           contentStyle={{
                             backgroundColor: 'white',
                             border: 'none',
@@ -406,24 +406,24 @@ const MaintainerDashboard: React.FC = () => {
                             fontSize: '12px'
                           }}
                         />
-                        <Line 
-                          type="monotone" 
-                          dataKey="opened" 
-                          stroke="#F59E0B" 
+                        <Line
+                          type="monotone"
+                          dataKey="opened"
+                          stroke="#F59E0B"
                           strokeWidth={2}
                           dot={{ fill: '#F59E0B', strokeWidth: 2, r: 3 }}
                         />
-                        <Line 
-                          type="monotone" 
-                          dataKey="closed" 
-                          stroke="#3B82F6" 
+                        <Line
+                          type="monotone"
+                          dataKey="closed"
+                          stroke="#3B82F6"
                           strokeWidth={3}
                           dot={{ fill: '#3B82F6', strokeWidth: 2, r: 4 }}
                         />
-                        <Line 
-                          type="monotone" 
-                          dataKey="resolved" 
-                          stroke="#10B981" 
+                        <Line
+                          type="monotone"
+                          dataKey="resolved"
+                          stroke="#10B981"
                           strokeWidth={2}
                           dot={{ fill: '#10B981', strokeWidth: 2, r: 3 }}
                         />
@@ -472,18 +472,18 @@ const MaintainerDashboard: React.FC = () => {
                       <AreaChart data={reviewsData}>
                         <defs>
                           <linearGradient id="colorReviews" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.3}/>
-                            <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0}/>
+                            <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.3} />
+                            <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0} />
                           </linearGradient>
                           <linearGradient id="colorApproved" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#10B981" stopOpacity={0.2}/>
-                            <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
+                            <stop offset="5%" stopColor="#10B981" stopOpacity={0.2} />
+                            <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
                           </linearGradient>
                         </defs>
                         <CartesianGrid strokeDasharray="3 3" stroke="#E9D5FF" />
                         <XAxis dataKey="week" tick={{ fontSize: 11, fill: '#6B21A8' }} />
                         <YAxis tick={{ fontSize: 11, fill: '#6B21A8' }} />
-                        <Tooltip 
+                        <Tooltip
                           contentStyle={{
                             backgroundColor: 'white',
                             border: 'none',
@@ -492,20 +492,20 @@ const MaintainerDashboard: React.FC = () => {
                             fontSize: '12px'
                           }}
                         />
-                        <Area 
-                          type="monotone" 
-                          dataKey="reviews" 
-                          stroke="#8B5CF6" 
-                          fillOpacity={1} 
-                          fill="url(#colorReviews)" 
+                        <Area
+                          type="monotone"
+                          dataKey="reviews"
+                          stroke="#8B5CF6"
+                          fillOpacity={1}
+                          fill="url(#colorReviews)"
                           strokeWidth={2}
                         />
-                        <Area 
-                          type="monotone" 
-                          dataKey="approved" 
-                          stroke="#10B981" 
-                          fillOpacity={1} 
-                          fill="url(#colorApproved)" 
+                        <Area
+                          type="monotone"
+                          dataKey="approved"
+                          stroke="#10B981"
+                          fillOpacity={1}
+                          fill="url(#colorApproved)"
                           strokeWidth={2}
                         />
                       </AreaChart>
@@ -553,14 +553,14 @@ const MaintainerDashboard: React.FC = () => {
                       <AreaChart data={commitsData}>
                         <defs>
                           <linearGradient id="colorCommits" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#F59E0B" stopOpacity={0.3}/>
-                            <stop offset="95%" stopColor="#F59E0B" stopOpacity={0}/>
+                            <stop offset="5%" stopColor="#F59E0B" stopOpacity={0.3} />
+                            <stop offset="95%" stopColor="#F59E0B" stopOpacity={0} />
                           </linearGradient>
                         </defs>
                         <CartesianGrid strokeDasharray="3 3" stroke="#FEF3C7" />
                         <XAxis dataKey="month" tick={{ fontSize: 11, fill: '#92400E' }} />
                         <YAxis tick={{ fontSize: 11, fill: '#92400E' }} />
-                        <Tooltip 
+                        <Tooltip
                           contentStyle={{
                             backgroundColor: 'white',
                             border: 'none',
@@ -573,12 +573,12 @@ const MaintainerDashboard: React.FC = () => {
                             name === 'commits' ? 'Commits' : name === 'additions' ? 'Lines Added' : 'Lines Deleted'
                           ]}
                         />
-                        <Area 
-                          type="monotone" 
-                          dataKey="commits" 
-                          stroke="#F59E0B" 
-                          fillOpacity={1} 
-                          fill="url(#colorCommits)" 
+                        <Area
+                          type="monotone"
+                          dataKey="commits"
+                          stroke="#F59E0B"
+                          fillOpacity={1}
+                          fill="url(#colorCommits)"
                           strokeWidth={3}
                         />
                       </AreaChart>
@@ -623,18 +623,18 @@ const MaintainerDashboard: React.FC = () => {
                       <AreaChart data={weeklyActivityData}>
                         <defs>
                           <linearGradient id="colorPrs" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3}/>
-                            <stop offset="95%" stopColor="#3B82F6" stopOpacity={0}/>
+                            <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3} />
+                            <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
                           </linearGradient>
                           <linearGradient id="colorReviews" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#10B981" stopOpacity={0.3}/>
-                            <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
+                            <stop offset="5%" stopColor="#10B981" stopOpacity={0.3} />
+                            <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
                           </linearGradient>
                         </defs>
                         <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
                         <XAxis dataKey="week" tick={{ fontSize: 12 }} stroke="#6B7280" />
                         <YAxis tick={{ fontSize: 12 }} stroke="#6B7280" />
-                        <Tooltip 
+                        <Tooltip
                           contentStyle={{
                             backgroundColor: 'white',
                             border: 'none',
@@ -642,20 +642,20 @@ const MaintainerDashboard: React.FC = () => {
                             boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
                           }}
                         />
-                        <Area 
-                          type="monotone" 
-                          dataKey="prs" 
-                          stroke="#3B82F6" 
-                          fillOpacity={1} 
-                          fill="url(#colorPrs)" 
+                        <Area
+                          type="monotone"
+                          dataKey="prs"
+                          stroke="#3B82F6"
+                          fillOpacity={1}
+                          fill="url(#colorPrs)"
                           strokeWidth={2}
                         />
-                        <Area 
-                          type="monotone" 
-                          dataKey="reviews" 
-                          stroke="#10B981" 
-                          fillOpacity={1} 
-                          fill="url(#colorReviews)" 
+                        <Area
+                          type="monotone"
+                          dataKey="reviews"
+                          stroke="#10B981"
+                          fillOpacity={1}
+                          fill="url(#colorReviews)"
                           strokeWidth={2}
                         />
                       </AreaChart>
@@ -704,7 +704,7 @@ const MaintainerDashboard: React.FC = () => {
                             <Cell key={`cell-${index}`} fill={entry.color} />
                           ))}
                         </Pie>
-                        <Tooltip 
+                        <Tooltip
                           contentStyle={{
                             backgroundColor: 'white',
                             border: 'none',
@@ -718,8 +718,8 @@ const MaintainerDashboard: React.FC = () => {
                   <div className="grid grid-cols-2 gap-4 mt-4">
                     {prStatusData.map((item, index) => (
                       <div key={index} className="flex items-center gap-3">
-                        <div 
-                          className="w-3 h-3 rounded-full" 
+                        <div
+                          className="w-3 h-3 rounded-full"
                           style={{ backgroundColor: item.color }}
                         ></div>
                         <div>
@@ -753,7 +753,7 @@ const MaintainerDashboard: React.FC = () => {
                       <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
                       <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#6B7280" />
                       <YAxis tick={{ fontSize: 12 }} stroke="#6B7280" />
-                      <Tooltip 
+                      <Tooltip
                         contentStyle={{
                           backgroundColor: 'white',
                           border: 'none',
@@ -761,17 +761,17 @@ const MaintainerDashboard: React.FC = () => {
                           boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
                         }}
                       />
-                      <Line 
-                        type="monotone" 
-                        dataKey="contributions" 
-                        stroke="#8B5CF6" 
+                      <Line
+                        type="monotone"
+                        dataKey="contributions"
+                        stroke="#8B5CF6"
                         strokeWidth={3}
                         dot={{ fill: '#8B5CF6', strokeWidth: 2, r: 4 }}
                       />
-                      <Line 
-                        type="monotone" 
-                        dataKey="successRate" 
-                        stroke="#10B981" 
+                      <Line
+                        type="monotone"
+                        dataKey="successRate"
+                        stroke="#10B981"
                         strokeWidth={3}
                         dot={{ fill: '#10B981', strokeWidth: 2, r: 4 }}
                       />
@@ -813,12 +813,11 @@ const MaintainerDashboard: React.FC = () => {
                   <div key={index} className="p-4 bg-white rounded-lg border border-gray-100 hover:shadow-md transition-shadow">
                     <div className="flex items-center justify-between mb-3">
                       <h4 className="font-medium text-gray-900 truncate">{repo.name}</h4>
-                      <Badge 
-                        className={`text-xs ${
-                          repo.status === 'active' 
-                            ? 'bg-green-100 text-green-700 border-green-200' 
+                      <Badge
+                        className={`text-xs ${repo.status === 'active'
+                            ? 'bg-green-100 text-green-700 border-green-200'
                             : 'bg-blue-100 text-blue-700 border-blue-200'
-                        }`}
+                          }`}
                       >
                         {repo.status}
                       </Badge>
@@ -864,8 +863,8 @@ const MaintainerDashboard: React.FC = () => {
         {/* Organizations Grid */}
         <div className="grid gap-6">
           {mockOrganizations.map((org) => (
-            <Card 
-              key={org.id} 
+            <Card
+              key={org.id}
               className="hover:shadow-lg transition-all duration-200 cursor-pointer border-l-4 border-l-primary/20 hover:border-l-primary"
               onClick={() => handleOrganizationClick(org.id)}
             >
@@ -875,7 +874,7 @@ const MaintainerDashboard: React.FC = () => {
                     <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/10 rounded-lg flex items-center justify-center">
                       <Building2 className="w-8 h-8 text-primary" />
                     </div>
-                    
+
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-3 mb-2">
                         <h3 className="text-xl font-semibold text-gray-900 truncate">{org.name}</h3>
@@ -889,11 +888,11 @@ const MaintainerDashboard: React.FC = () => {
                           {org.visibility}
                         </Badge>
                       </div>
-                      
+
                       <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed">
                         {org.description}
                       </p>
-                      
+
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                         <div className="flex items-center gap-2 text-gray-600">
                           <Users className="w-4 h-4" />
@@ -912,13 +911,13 @@ const MaintainerDashboard: React.FC = () => {
                           <span>Since {new Date(org.createdAt).getFullYear()}</span>
                         </div>
                       </div>
-                      
+
                       <div className="flex items-center gap-4 mt-4 pt-4 border-t border-gray-100">
                         <div className="flex items-center gap-2 text-sm text-gray-500">
                           <Github className="w-4 h-4" />
-                          <a 
-                            href={org.githubUrl} 
-                            target="_blank" 
+                          <a
+                            href={org.githubUrl}
+                            target="_blank"
                             rel="noopener noreferrer"
                             className="hover:text-primary transition-colors"
                             onClick={(e) => e.stopPropagation()}
@@ -929,9 +928,9 @@ const MaintainerDashboard: React.FC = () => {
                         {org.website && (
                           <div className="flex items-center gap-2 text-sm text-gray-500">
                             <Globe className="w-4 h-4" />
-                            <a 
-                              href={`https://${org.website}`} 
-                              target="_blank" 
+                            <a
+                              href={`https://${org.website}`}
+                              target="_blank"
                               rel="noopener noreferrer"
                               className="hover:text-primary transition-colors"
                               onClick={(e) => e.stopPropagation()}
@@ -942,7 +941,7 @@ const MaintainerDashboard: React.FC = () => {
                         )}
                         <div className="flex items-center gap-2 text-sm text-gray-500">
                           <Mail className="w-4 h-4" />
-                          <a 
+                          <a
                             href={`mailto:${org.email}`}
                             className="hover:text-primary transition-colors"
                             onClick={(e) => e.stopPropagation()}
@@ -953,10 +952,10 @@ const MaintainerDashboard: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center gap-2 ml-4">
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       size="sm"
                       onClick={(e) => {
                         e.stopPropagation();
@@ -966,8 +965,8 @@ const MaintainerDashboard: React.FC = () => {
                       <Github className="w-4 h-4 mr-1" />
                       View
                     </Button>
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       size="sm"
                       onClick={(e) => {
                         e.stopPropagation();
